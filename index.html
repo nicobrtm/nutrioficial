@@ -89,8 +89,8 @@
                 </div>
             </div>
 
-            <!-- TELA 2: LOADER -->
-            <div id="loading-screen" class="hidden bg-white p-10 text-center py-32 absolute inset-0 z-20 flex flex-col justify-center items-center">
+            <!-- TELA 2: LOADER (CORRIGIDA: REMOVIDO absolute inset-0 z-20) -->
+            <div id="loading-screen" class="hidden bg-white p-10 text-center py-32 w-full flex flex-col justify-center items-center">
                 <div class="relative mb-8">
                     <div class="w-20 h-20 border-4 border-gray-100 border-t-tech-yellow rounded-full animate-spin"></div>
                     <i data-lucide="cpu" class="w-8 h-8 text-gray-300 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></i>
@@ -780,6 +780,7 @@
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             const goal = localStorage.getItem('nutri_goal') || 'Perder Peso';
+            // Garante que o objetivo exista no fullPdfData, se não, usa fallback
             const data = fullPdfData[goal] || fullPdfData['Perder Peso'];
             
             // --- HEADER ---
