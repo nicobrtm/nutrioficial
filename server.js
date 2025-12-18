@@ -1,15 +1,13 @@
 const express = require('express');
 const cors = require('cors');
-const { MercadoPagoConfig, Payment } = require('mercadopago');
+// Importa Preference além de Payment
+const { MercadoPagoConfig, Payment, Preference } = require('mercadopago');
 require('dotenv').config();
 
 const app = express();
-
-// Na Vercel a porta é automática, mas mantemos 3000 para testes locais
 const port = process.env.PORT || 3000;
 
 // Configura o Mercado Pago
-// A chave será pega das Variáveis de Ambiente da Vercel
 const client = new MercadoPagoConfig({ 
     accessToken: process.env.MP_ACCESS_TOKEN 
 });
@@ -17,12 +15,11 @@ const client = new MercadoPagoConfig({
 app.use(express.json());
 app.use(cors());
 
-// Rota de Teste
 app.get('/', (req, res) => {
     res.send('API NutriOfficial Online 🚀');
 });
 
-// Rota 1: Criar o Pix
+// Rota 1: Criar Pix (Direto na tela)
 app.post('/create-payment', async (req, res) => {
     try {
         const { email, amount, description } = req.body;
@@ -33,7 +30,7 @@ app.post('/create-payment', async (req, res) => {
             description: description || 'NutriOfficial',
             payment_method_id: 'pix',
             payer: { email: email || 'cliente@email.com' },
-            date_of_expiration: new Date(Date.now() + 30 * 60 * 1000).toISOString() // 30 min validade
+            date_of_expiration: new Date(Date.now() + 30 * 60 * 1000).toISOString()
         };
 
         const result = await payment.create({ body });
@@ -51,7 +48,42 @@ app.post('/create-payment', async (req, res) => {
     }
 });
 
-// Rota 2: Verificar Status
+// Rota 2: Criar Preferência (Para Cartão de Crédito/Débito)
+app.post('/create-preference', async (req, res) => {
+    try {
+        const { amount, description, returnUrl } = req.body;
+        const preference = new Preference(client);
+
+        const body = {
+            items: [
+                {
+                    id: 'protocolo-30-dias',
+                    title: description || 'Protocolo NutriOfficial',
+                    quantity: 1,
+                    unit_price: Number(amount)
+                }
+            ],
+            // Configura para onde o cliente volta após pagar
+            back_urls: {
+                success: `${returnUrl}/?status=approved`,
+                failure: `${returnUrl}/?status=failure`,
+                pending: `${returnUrl}/?status=pending`
+            },
+            auto_return: 'approved'
+        };
+
+        const result = await preference.create({ body });
+        
+        // Retorna o link de pagamento (init_point)
+        res.json({ init_point: result.init_point });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao criar preferência de cartão' });
+    }
+});
+
+// Rota 3: Verificar Status
 app.get('/payment-status/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -69,10 +101,8 @@ app.get('/payment-status/:id', async (req, res) => {
     }
 });
 
-// Exporta o app para a Vercel (Obrigatório)
 module.exports = app;
 
-// Só roda o listen se estiver no seu PC (local)
 if (require.main === module) {
     app.listen(port, () => {
         console.log(`Servidor rodando na porta ${port}`);
