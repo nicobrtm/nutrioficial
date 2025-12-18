@@ -16,6 +16,10 @@
       "destination": "/server.js"
     },
     {
+      "source": "/create-preference",
+      "destination": "/server.js"
+    },
+    {
       "source": "/payment-status/:id",
       "destination": "/server.js"
     },
