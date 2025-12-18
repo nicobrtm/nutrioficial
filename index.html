@@ -14,117 +14,53 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
-                        tech: {
-                            black: '#0F0F0F',
-                            yellow: '#FFCC00', // Amarelo QCY style
-                            hover: '#E5B800',
-                            gray: '#F5F5F7',
-                            darkGray: '#1D1D1F',
-                            green: '#10B981'
-                        }
+                        tech: { black: '#0F0F0F', yellow: '#FFCC00', hover: '#E5B800', gray: '#F5F5F7', darkGray: '#1D1D1F', green: '#10B981' }
                     },
-                    boxShadow: {
-                        'glow': '0 0 20px rgba(255, 204, 0, 0.3)',
-                        'card': '0 4px 20px rgba(0,0,0,0.05)'
-                    }
+                    boxShadow: { 'glow': '0 0 20px rgba(255, 204, 0, 0.3)', 'card': '0 4px 20px rgba(0,0,0,0.05)' }
                 }
             }
         }
     </script>
     <style>
         body { background-color: #F2F2F2; }
-        .blur-content {
-            filter: blur(8px);
-            user-select: none;
-            pointer-events: none;
-            opacity: 0.5;
-            transition: all 0.5s ease;
-        }
-        .content-unlocked {
-            filter: none !important;
-            user-select: auto !important;
-            pointer-events: auto !important;
-            opacity: 1 !important;
-        }
-        .option-card:hover {
-            border-color: #FFCC00;
-            background-color: #fffae5;
-            transform: translateY(-2px);
-        }
-        .option-selected {
-            background-color: #0F0F0F;
-            color: #FFCC00;
-            border-color: #0F0F0F;
-        }
+        .blur-content { filter: blur(8px); user-select: none; pointer-events: none; opacity: 0.5; transition: all 0.5s ease; }
+        .content-unlocked { filter: none !important; user-select: auto !important; pointer-events: auto !important; opacity: 1 !important; }
+        .option-card:hover { border-color: #FFCC00; background-color: #fffae5; transform: translateY(-2px); }
+        .option-selected { background-color: #0F0F0F; color: #FFCC00; border-color: #0F0F0F; }
         .progress-bar { transition: width 0.5s ease-in-out; }
+        .doc-page { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: relative; }
+        .doc-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 4rem; color: rgba(0,0,0,0.03); font-weight: 900; pointer-events: none; white-space: nowrap; }
+        .checkout-badge { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        @keyframes scan { 0% { top: 0; } 50% { top: 100%; } 100% { top: 0; } }
+        .qr-scanner { position: absolute; left: 0; width: 100%; height: 2px; background: #FFCC00; box-shadow: 0 0 4px #FFCC00; animation: scan 2s infinite linear; }
         
-        /* Efeito de documento realista */
-        .doc-page {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: relative;
-        }
-        .doc-watermark {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 4rem;
-            color: rgba(0,0,0,0.03);
-            font-weight: 900;
-            pointer-events: none;
-            white-space: nowrap;
-        }
-        .checkout-badge {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-        }
-        
-        /* Animação do QR Code */
-        @keyframes scan {
-            0% { top: 0; }
-            50% { top: 100%; }
-            100% { top: 0; }
-        }
-        .qr-scanner {
-            position: absolute;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: #FFCC00;
-            box-shadow: 0 0 4px #FFCC00;
-            animation: scan 2s infinite linear;
-        }
+        /* Animação do Modal */
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .modal-animate { animation: fadeIn 0.2s ease-out forwards; }
     </style>
 </head>
 <body class="text-tech-black font-sans antialiased min-h-screen flex flex-col">
 
-    <!-- Header Profissional -->
+    <!-- Header -->
     <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-            <!-- Logo -->
             <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
                 <div class="bg-tech-yellow text-black px-2 py-1 rounded-sm font-black text-sm tracking-tighter">NUTRI</div>
                 <span class="font-bold text-lg tracking-tight">OFFICIAL™</span>
             </div>
-
-            <!-- Navegação Desktop -->
             <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
                 <a href="#como-funciona" class="hover:text-black transition">Como Funciona</a>
                 <a href="#depoimentos" class="hover:text-black transition">Resultados</a>
                 <a href="#faq" class="hover:text-black transition">Dúvidas</a>
             </nav>
-
-            <!-- Área Login -->
             <div class="flex items-center gap-4">
                 <div class="hidden md:flex items-center gap-1 text-xs text-green-600 bg-green-50 px-3 py-1 rounded-full font-bold">
                     <i data-lucide="shield-check" class="w-3 h-3"></i> Site Seguro
                 </div>
-                <button id="btn-student-area" class="flex items-center gap-2 text-sm font-bold border border-gray-300 px-4 py-2 rounded hover:bg-black hover:text-white hover:border-black transition duration-300">
+                <!-- Botão Área do Aluno Corrigido -->
+                <button onclick="openLoginModal()" class="flex items-center gap-2 text-sm font-bold border border-gray-300 px-4 py-2 rounded hover:bg-black hover:text-white hover:border-black transition duration-300">
                     <i data-lucide="user" class="w-4 h-4"></i>
                     <span class="hidden sm:inline">Área do Aluno</span>
                 </button>
@@ -134,11 +70,7 @@
 
     <!-- Main Content -->
     <main class="flex-grow flex flex-col items-center justify-start pt-8 pb-12 px-4">
-        
-        <!-- Container Principal (Funnel) -->
         <div id="main-container" class="w-full max-w-3xl bg-white shadow-card rounded-xl overflow-hidden border border-gray-100 mb-12 relative">
-            
-            <!-- Barra de Progresso -->
             <div id="progress-container" class="w-full bg-gray-100 h-1.5">
                 <div id="progress-bar" class="bg-tech-yellow h-1.5 w-[10%] progress-bar shadow-glow"></div>
             </div>
@@ -149,20 +81,15 @@
                     <span class="text-xs font-bold text-tech-yellow bg-black px-2 py-1 rounded uppercase tracking-wider">Passo <span id="step-number">1</span> de 10</span>
                     <span class="text-xs text-gray-400 font-medium">Análise de Perfil Metabólico</span>
                 </div>
-                
                 <h2 id="question-text" class="text-2xl md:text-4xl font-black mb-2 leading-tight">Qual seu objetivo principal hoje?</h2>
                 <p class="text-gray-500 mb-10 text-sm md:text-base">Essa resposta define a base do seu cardápio.</p>
-                
-                <div id="options-container" class="grid gap-4">
-                    <!-- Opções injetadas via JS -->
-                </div>
-
+                <div id="options-container" class="grid gap-4"></div>
                 <div class="mt-8 pt-6 border-t border-gray-100 flex justify-center items-center gap-2 text-xs text-gray-400">
                     <i data-lucide="lock" class="w-3 h-3"></i> Suas respostas são confidenciais e protegidas.
                 </div>
             </div>
 
-            <!-- TELA 2: LOADER (Processando) -->
+            <!-- TELA 2: LOADER -->
             <div id="loading-screen" class="hidden bg-white p-10 text-center py-32 absolute inset-0 z-20 flex flex-col justify-center items-center">
                 <div class="relative mb-8">
                     <div class="w-20 h-20 border-4 border-gray-100 border-t-tech-yellow rounded-full animate-spin"></div>
@@ -170,7 +97,6 @@
                 </div>
                 <h3 class="text-2xl font-bold mb-2">Construindo seu Protocolo...</h3>
                 <p id="loading-text" class="text-gray-500 animate-pulse">Analisando taxa metabólica basal...</p>
-                
                 <div class="mt-8 w-64 bg-gray-100 rounded-full h-2 overflow-hidden mx-auto">
                     <div class="bg-green-500 h-2 rounded-full animate-pulse-slow w-full"></div>
                 </div>
@@ -178,21 +104,13 @@
 
             <!-- TELA 3: RESULTADO / CHECKOUT -->
             <div id="result-screen" class="hidden relative bg-gray-50">
-                <!-- Banner Sucesso -->
                 <div class="bg-tech-green text-white p-4 text-center shadow-lg relative z-10">
-                    <p class="font-bold text-lg flex items-center justify-center gap-2">
-                        <i data-lucide="check-circle-2" class="w-6 h-6"></i>
-                        PROTOCOLO GERADO COM SUCESSO!
-                    </p>
+                    <p class="font-bold text-lg flex items-center justify-center gap-2"><i data-lucide="check-circle-2" class="w-6 h-6"></i> PROTOCOLO GERADO COM SUCESSO!</p>
                     <p class="text-xs text-green-100 mt-1">ID do Protocolo: #882910-BR • Válido por 15min</p>
                 </div>
-
                 <div class="p-4 md:p-8">
-                    <!-- Visualização do PDF -->
                     <div class="doc-page rounded-lg p-8 min-h-[600px] border border-gray-200 relative overflow-hidden">
                         <div class="doc-watermark">PREVIEW</div>
-                        
-                        <!-- Cabeçalho do Doc -->
                         <div class="flex justify-between items-end border-b-2 border-black pb-4 mb-8">
                             <div>
                                 <h1 id="doc-title" class="text-2xl font-black uppercase">Protocolo 30 Dias</h1>
@@ -203,76 +121,47 @@
                                 <p class="text-sm font-bold">18/12/2025</p>
                             </div>
                         </div>
-
-                        <!-- Conteúdo Visível -->
                         <div class="space-y-6">
                             <div>
-                                <h3 id="doc-phase1-title" class="font-bold text-lg mb-2 flex items-center gap-2">
-                                    <span class="bg-tech-yellow w-2 h-6 block"></span>
-                                    Fase 1: Desintoxicação (Dias 1-7)
-                                </h3>
-                                <p id="doc-phase1-desc" class="text-sm text-gray-600 mb-4 text-justify">
-                                    O objetivo desta primeira semana é "resetar" seus receptores de insulina. Baseado no seu perfil, você deve evitar picos de glicemia pela manhã.
-                                </p>
-                                
+                                <h3 id="doc-phase1-title" class="font-bold text-lg mb-2 flex items-center gap-2"><span class="bg-tech-yellow w-2 h-6 block"></span> Fase 1: Desintoxicação (Dias 1-7)</h3>
+                                <p id="doc-phase1-desc" class="text-sm text-gray-600 mb-4 text-justify">O objetivo desta primeira semana é "resetar" seus receptores de insulina.</p>
                                 <div class="bg-gray-50 p-4 rounded border border-gray-100">
                                     <h4 class="font-bold text-sm mb-3 uppercase tracking-wide text-gray-400">Café da Manhã Sugerido</h4>
                                     <div class="flex items-start gap-4">
-                                        <div class="bg-white p-2 rounded shadow-sm border border-gray-100">
-                                            <i data-lucide="coffee" class="w-6 h-6 text-tech-yellow"></i>
-                                        </div>
-                                        <div>
-                                            <p id="doc-breakfast-title" class="font-bold text-sm">Opção Termogênica</p>
-                                            <p id="doc-breakfast-desc" class="text-sm text-gray-600">2 Ovos mexidos com açafrão (para ativar metabolismo) + 1 fatia média de mamão com semente de chia.</p>
-                                        </div>
+                                        <div class="bg-white p-2 rounded shadow-sm border border-gray-100"><i data-lucide="coffee" class="w-6 h-6 text-tech-yellow"></i></div>
+                                        <div><p id="doc-breakfast-title" class="font-bold text-sm">Opção Termogênica</p><p id="doc-breakfast-desc" class="text-sm text-gray-600">2 Ovos mexidos...</p></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Conteúdo Borrado (Será desbloqueado) -->
+                        <!-- Conteúdo Borrado -->
                         <div class="mt-8 relative" id="blurred-area">
                             <div id="content-to-unlock" class="blur-content space-y-6">
                                 <h3 id="doc-lunch-title" class="font-bold text-lg mb-2">Almoço Estratégico</h3>
-                                <p id="doc-lunch-desc" class="text-sm text-gray-600 text-justify">Para o almoço, vamos focar em proteínas de alta biodisponibilidade. Utilize 150g de peito de frango grelhado ou peixe branco.</p>
+                                <p id="doc-lunch-desc" class="text-sm text-gray-600 text-justify">Para o almoço...</p>
                                 <div class="grid grid-cols-2 gap-4">
-                                    <div class="bg-gray-50 p-3 rounded border border-gray-100">
-                                        <p class="font-bold text-xs">Salada Liberada</p>
-                                        <p class="text-xs text-gray-500">Folhas verdes escuras à vontade.</p>
-                                    </div>
-                                    <div class="bg-gray-50 p-3 rounded border border-gray-100">
-                                        <p class="font-bold text-xs">Carboidrato</p>
-                                        <p class="text-xs text-gray-500">Apenas 3 colheres de arroz integral.</p>
-                                    </div>
+                                    <div class="bg-gray-50 p-3 rounded border border-gray-100"><p class="font-bold text-xs">Salada Liberada</p></div>
+                                    <div class="bg-gray-50 p-3 rounded border border-gray-100"><p class="font-bold text-xs">Carboidrato</p></div>
                                 </div>
                                 <h3 id="doc-dinner-title" class="font-bold text-lg mb-2">Jantar Leve</h3>
-                                <p id="doc-dinner-desc" class="text-sm text-gray-600">Sopa de legumes (sem batata) ou omelete de 2 ovos com espinafre. Evite comer após as 20h.</p>
-                                
+                                <p id="doc-dinner-desc" class="text-sm text-gray-600">Sopa de legumes...</p>
                                 <div class="mt-8 p-4 bg-green-50 border border-green-200 rounded text-center">
                                     <p class="font-bold text-green-800">PARABÉNS! VOCÊ DESBLOQUEOU O CONTEÚDO.</p>
                                     <p class="text-xs text-green-600">Siga este protocolo por 30 dias.</p>
                                 </div>
                             </div>
 
-                            <!-- OVERLAY DE CHECKOUT (Oferta) -->
+                            <!-- OVERLAY DE CHECKOUT -->
                             <div id="checkout-overlay" class="absolute inset-0 top-[-20px] bg-white/60 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center">
-                                
-                                <!-- ETAPA 1: OFERTA -->
+                                <!-- OFERTA -->
                                 <div id="offer-card" class="bg-white text-tech-black p-8 rounded-xl shadow-2xl text-center max-w-md w-full mx-auto border-2 border-tech-yellow relative">
-                                    <!-- Selo de Desconto -->
-                                    <div class="absolute -top-4 -right-4 bg-red-600 text-white font-black text-sm px-3 py-1 rounded shadow-lg transform rotate-3">
-                                        50% OFF HOJE
-                                    </div>
-
+                                    <div class="absolute -top-4 -right-4 bg-red-600 text-white font-black text-sm px-3 py-1 rounded shadow-lg transform rotate-3">50% OFF HOJE</div>
                                     <div class="mb-6">
-                                        <div class="w-12 h-12 bg-black rounded-full flex items-center justify-center mx-auto mb-3">
-                                            <i data-lucide="lock" class="w-6 h-6 text-tech-yellow"></i>
-                                        </div>
+                                        <div class="w-12 h-12 bg-black rounded-full flex items-center justify-center mx-auto mb-3"><i data-lucide="lock" class="w-6 h-6 text-tech-yellow"></i></div>
                                         <h3 class="text-xl font-black uppercase mb-1">Desbloquear Plano Completo</h3>
                                         <p class="text-sm text-gray-500">Acesso vitalício ao seu protocolo + 3 Bônus</p>
                                     </div>
-
-                                    <!-- Preço -->
                                     <div class="bg-gray-50 rounded-lg p-4 mb-6 border border-gray-100">
                                         <div class="flex justify-between items-center mb-2">
                                             <span class="text-sm text-gray-400 line-through">De R$ 47,90</span>
@@ -284,69 +173,50 @@
                                         </div>
                                         <p class="text-xs text-gray-400 mt-1">Pagamento único • Sem mensalidades</p>
                                     </div>
-
-                                    <!-- Botão CTA -->
                                     <button onclick="startPayment()" class="w-full bg-tech-yellow hover:bg-tech-hover text-black font-black py-4 rounded-lg text-lg uppercase tracking-wide transition transform hover:scale-[1.02] shadow-lg mb-4 flex items-center justify-center gap-2 group">
-                                        QUERO EMAGRECER AGORA
-                                        <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition"></i>
+                                        QUERO EMAGRECER AGORA <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition"></i>
                                     </button>
-
-                                    <!-- Selos de Segurança -->
                                     <div class="grid grid-cols-2 gap-2 text-[10px] text-gray-500 font-medium border-t border-gray-100 pt-4">
-                                        <div class="flex items-center justify-center gap-1">
-                                            <i data-lucide="shield-check" class="w-3 h-3 text-green-600"></i> Compra Segura
-                                        </div>
-                                        <div class="flex items-center justify-center gap-1">
-                                            <i data-lucide="zap" class="w-3 h-3 text-tech-yellow"></i> Entrega Imediata
-                                        </div>
+                                        <div class="flex items-center justify-center gap-1"><i data-lucide="shield-check" class="w-3 h-3 text-green-600"></i> Compra Segura</div>
+                                        <div class="flex items-center justify-center gap-1"><i data-lucide="zap" class="w-3 h-3 text-tech-yellow"></i> Entrega Imediata</div>
                                     </div>
-                                    
-                                    <!-- Ícones Pagamento -->
                                     <div class="flex justify-center gap-3 mt-3 opacity-60 grayscale hover:grayscale-0 transition">
                                         <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo%E2%80%94pix_powered_by_Banco_Central_%28Brazil%2C_2020%29.svg" class="h-4" alt="Pix">
                                     </div>
                                 </div>
 
-                                <!-- ETAPA 2: PAGAMENTO PIX (Inicialmente Oculto) -->
+                                <!-- PAGAMENTO PIX REAL -->
                                 <div id="pix-payment-card" class="hidden bg-white text-tech-black p-6 rounded-xl shadow-2xl text-center max-w-sm w-full mx-auto border border-gray-200 relative">
                                     <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-3">
                                         <h3 class="font-bold text-lg">Pagamento via Pix</h3>
                                         <span class="text-xs font-bold bg-green-100 text-green-700 px-2 py-1 rounded">R$ 24,90</span>
                                     </div>
-
                                     <div class="bg-gray-100 p-4 rounded-lg mb-4 relative overflow-hidden group">
-                                        <!-- QR Code Placeholder (Usando uma API pública para gerar um QR visual, em produção seria o Payload do MP) -->
-                                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=00020126360014BR.GOV.BCB.PIX0114+55119999999952040000530398654041.005802BR5913NutriOfficial6009Sao Paulo62070503***63041234" class="w-48 h-48 mx-auto mix-blend-multiply opacity-90" alt="QR Code Pix">
-                                        <div class="qr-scanner"></div>
-                                        <p class="text-[10px] text-gray-400 mt-2">QR Code de Teste - Aguarde a aprovação automática</p>
+                                        <!-- QR Code será injetado aqui pelo JS -->
+                                        <img src="" id="pix-qr-img" class="w-48 h-48 mx-auto" alt="Aguardando QR Code...">
+                                        <p class="text-[10px] text-gray-400 mt-2">Abra o app do seu banco e escaneie</p>
                                     </div>
-
                                     <div class="mb-4 text-left">
                                         <label class="text-xs font-bold text-gray-500 mb-1 block">Pix Copia e Cola</label>
                                         <div class="flex gap-2">
-                                            <input type="text" value="00020126360014BR.GOV.BCB.PIX..." class="w-full bg-gray-50 border border-gray-200 text-xs p-2 rounded text-gray-500 font-mono" readonly>
-                                            <button onclick="copyPix()" class="bg-black text-tech-yellow p-2 rounded hover:bg-gray-800 transition">
-                                                <i data-lucide="copy" class="w-4 h-4"></i>
-                                            </button>
+                                            <input type="text" id="pix-copia-cola" value="Gerando..." class="w-full bg-gray-50 border border-gray-200 text-xs p-2 rounded text-gray-500 font-mono" readonly>
+                                            <button onclick="copyPix()" class="bg-black text-tech-yellow p-2 rounded hover:bg-gray-800 transition"><i data-lucide="copy" class="w-4 h-4"></i></button>
                                         </div>
                                     </div>
-
                                     <div class="bg-yellow-50 border border-yellow-200 rounded p-3 mb-2">
                                         <div class="flex items-center justify-center gap-2 text-yellow-800 animate-pulse">
                                             <div class="w-2 h-2 bg-yellow-600 rounded-full"></div>
-                                            <span class="text-xs font-bold" id="status-text">Aguardando pagamento...</span>
+                                            <span class="text-xs font-bold" id="status-text">Gerando Pix...</span>
                                         </div>
                                     </div>
-                                    <p class="text-[10px] text-gray-400">Tempo restante: <span id="timer">15:00</span></p>
+                                    <p class="text-[10px] text-gray-400">Tempo restante: <span id="timer">30:00</span></p>
                                 </div>
-
                             </div>
                             
-                            <!-- BOTÃO DE DOWNLOAD (Inicialmente Oculto) -->
+                            <!-- BOTÃO DE DOWNLOAD -->
                             <div id="download-area" class="hidden absolute bottom-10 left-0 right-0 z-20 flex justify-center animate-bounce">
                                 <button onclick="downloadPDF()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full shadow-lg flex items-center gap-2 transform transition hover:scale-105 border-4 border-white">
-                                    <i data-lucide="download" class="w-5 h-5"></i>
-                                    BAIXAR MEU PDF AGORA
+                                    <i data-lucide="download" class="w-5 h-5"></i> BAIXAR MEU PDF AGORA
                                 </button>
                             </div>
                         </div>
@@ -357,72 +227,38 @@
 
         <!-- Seção de Garantia (Abaixo do Card) -->
         <section class="max-w-3xl w-full mb-12 grid md:grid-cols-2 gap-6" id="garantia">
-            <!-- Garantia Box -->
             <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex items-center gap-4">
-                <div class="w-16 h-16 bg-black text-tech-yellow rounded-full flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="award" class="w-8 h-8"></i>
-                </div>
-                <div>
-                    <h4 class="font-bold text-lg">Garantia Blindada de 7 Dias</h4>
-                    <p class="text-sm text-gray-600">Se não gostar do conteúdo, devolvemos 100% do seu dinheiro. Sem perguntas.</p>
-                </div>
+                <div class="w-16 h-16 bg-black text-tech-yellow rounded-full flex items-center justify-center flex-shrink-0"><i data-lucide="award" class="w-8 h-8"></i></div>
+                <div><h4 class="font-bold text-lg">Garantia Blindada de 7 Dias</h4><p class="text-sm text-gray-600">Se não gostar do conteúdo, devolvemos 100% do seu dinheiro.</p></div>
             </div>
-             <!-- Suporte Box -->
              <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex items-center gap-4">
-                <div class="w-16 h-16 bg-gray-100 text-black rounded-full flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="message-circle" class="w-8 h-8"></i>
-                </div>
-                <div>
-                    <h4 class="font-bold text-lg">Suporte Nutricional</h4>
-                    <p class="text-sm text-gray-600">Dúvidas sobre o cardápio? Nossa equipe responde em até 24h.</p>
-                </div>
+                <div class="w-16 h-16 bg-gray-100 text-black rounded-full flex items-center justify-center flex-shrink-0"><i data-lucide="message-circle" class="w-8 h-8"></i></div>
+                <div><h4 class="font-bold text-lg">Suporte Nutricional</h4><p class="text-sm text-gray-600">Dúvidas sobre o cardápio? Nossa equipe responde em até 24h.</p></div>
             </div>
         </section>
-
+        
         <!-- Seção de Comentários (Prova Social) -->
         <section id="depoimentos" class="max-w-3xl w-full mb-12">
             <h3 class="font-bold text-xl mb-6 flex items-center gap-2">
                 <span class="bg-black text-white p-1 rounded"><i data-lucide="users" class="w-4 h-4"></i></span>
                 Quem comprou, aprovou
             </h3>
-            
             <div class="grid gap-4">
                 <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-green-500">
                     <div class="flex justify-between items-start mb-3">
                         <div class="flex items-center gap-3">
                             <img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-10 h-10 rounded-full border border-gray-200">
-                            <div>
-                                <span class="font-bold text-sm block">Mariana Alves</span>
-                                <div class="flex text-tech-yellow text-xs gap-0.5">
-                                    <i data-lucide="star" class="w-3 h-3 fill-current"></i>
-                                    <i data-lucide="star" class="w-3 h-3 fill-current"></i>
-                                    <i data-lucide="star" class="w-3 h-3 fill-current"></i>
-                                    <i data-lucide="star" class="w-3 h-3 fill-current"></i>
-                                    <i data-lucide="star" class="w-3 h-3 fill-current"></i>
-                                    <span class="text-gray-400 ml-1">Compra Verificada</span>
-                                </div>
-                            </div>
+                            <div><span class="font-bold text-sm block">Mariana Alves</span><div class="flex text-tech-yellow text-xs gap-0.5"><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><span class="text-gray-400 ml-1">Compra Verificada</span></div></div>
                         </div>
                         <span class="text-xs text-gray-400">Há 2 horas</span>
                     </div>
                     <p class="text-sm text-gray-700">"Gente, vou ser bem sincera. A primeira semana foi chata porque tive que cortar o açúcar no café, mas o cardápio é muito bom porque não tem comida estranha. É arroz, feijão, frango... coisas normais. Já desinchei bastante."</p>
                 </div>
-
                 <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-green-500">
                       <div class="flex justify-between items-start mb-3">
                         <div class="flex items-center gap-3">
                             <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-10 h-10 rounded-full border border-gray-200">
-                            <div>
-                                <span class="font-bold text-sm block">Carlos Rodrigues</span>
-                                <div class="flex text-tech-yellow text-xs gap-0.5">
-                                    <i data-lucide="star" class="w-3 h-3 fill-current"></i>
-                                    <i data-lucide="star" class="w-3 h-3 fill-current"></i>
-                                    <i data-lucide="star" class="w-3 h-3 fill-current"></i>
-                                    <i data-lucide="star" class="w-3 h-3 fill-current"></i>
-                                    <i data-lucide="star" class="w-3 h-3 fill-current"></i>
-                                    <span class="text-gray-400 ml-1">Compra Verificada</span>
-                                </div>
-                            </div>
+                            <div><span class="font-bold text-sm block">Carlos Rodrigues</span><div class="flex text-tech-yellow text-xs gap-0.5"><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><span class="text-gray-400 ml-1">Compra Verificada</span></div></div>
                         </div>
                         <span class="text-xs text-gray-400">Há 5 horas</span>
                     </div>
@@ -436,24 +272,15 @@
             <h3 class="font-bold text-xl mb-6">Perguntas Frequentes</h3>
             <div class="space-y-3">
                 <details class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 group cursor-pointer">
-                    <summary class="font-bold text-sm flex justify-between items-center list-none">
-                        O acesso é vitalício?
-                        <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 group-open:rotate-180 transition"></i>
-                    </summary>
+                    <summary class="font-bold text-sm flex justify-between items-center list-none">O acesso é vitalício?<i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 group-open:rotate-180 transition"></i></summary>
                     <p class="text-sm text-gray-600 mt-3 pl-2 border-l-2 border-tech-yellow">Sim! Pagando uma única vez, você tem acesso ao material para sempre e recebe todas as atualizações futuras sem custo.</p>
                 </details>
                 <details class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 group cursor-pointer">
-                    <summary class="font-bold text-sm flex justify-between items-center list-none">
-                        Preciso comprar suplementos caros?
-                        <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 group-open:rotate-180 transition"></i>
-                    </summary>
+                    <summary class="font-bold text-sm flex justify-between items-center list-none">Preciso comprar suplementos caros?<i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 group-open:rotate-180 transition"></i></summary>
                     <p class="text-sm text-gray-600 mt-3 pl-2 border-l-2 border-tech-yellow">Não. O cardápio é baseado em "comida de verdade" (arroz, feijão, ovos, frutas, legumes) que você encontra em qualquer mercado.</p>
                 </details>
                 <details class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 group cursor-pointer">
-                    <summary class="font-bold text-sm flex justify-between items-center list-none">
-                        E se eu não gostar?
-                        <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 group-open:rotate-180 transition"></i>
-                    </summary>
+                    <summary class="font-bold text-sm flex justify-between items-center list-none">E se eu não gostar?<i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 group-open:rotate-180 transition"></i></summary>
                     <p class="text-sm text-gray-600 mt-3 pl-2 border-l-2 border-tech-yellow">Você tem 7 dias de garantia. Basta enviar um e-mail para suporte@nutriofficial.com.br e devolvemos seu dinheiro na hora.</p>
                 </details>
             </div>
@@ -475,26 +302,14 @@
                     <i data-lucide="facebook" class="w-5 h-5 hover:text-white cursor-pointer"></i>
                 </div>
             </div>
-            
             <div>
                 <h4 class="text-white font-bold mb-4 uppercase text-xs">Institucional</h4>
-                <ul class="space-y-2 text-xs">
-                    <li><a href="#" class="hover:text-tech-yellow">Sobre Nós</a></li>
-                    <li><a href="#" class="hover:text-tech-yellow">Termos de Uso</a></li>
-                    <li><a href="#" class="hover:text-tech-yellow">Política de Privacidade</a></li>
-                    <li><a href="#" class="hover:text-tech-yellow">Política de Reembolso</a></li>
-                </ul>
+                <ul class="space-y-2 text-xs"><li><a href="#" class="hover:text-tech-yellow">Sobre Nós</a></li><li><a href="#" class="hover:text-tech-yellow">Termos de Uso</a></li><li><a href="#" class="hover:text-tech-yellow">Política de Privacidade</a></li><li><a href="#" class="hover:text-tech-yellow">Política de Reembolso</a></li></ul>
             </div>
-
             <div>
                 <h4 class="text-white font-bold mb-4 uppercase text-xs">Ajuda</h4>
-                <ul class="space-y-2 text-xs">
-                    <li><a href="#" class="hover:text-tech-yellow">Central de Suporte</a></li>
-                    <li><a href="#" class="hover:text-tech-yellow">Acompanhar Pedido</a></li>
-                    <li><a href="#" class="hover:text-tech-yellow">Área de Membros</a></li>
-                </ul>
+                <ul class="space-y-2 text-xs"><li><a href="#" class="hover:text-tech-yellow">Central de Suporte</a></li><li><a href="#" class="hover:text-tech-yellow">Acompanhar Pedido</a></li><li><a href="#" class="hover:text-tech-yellow">Área de Membros</a></li></ul>
             </div>
-
             <div>
                 <h4 class="text-white font-bold mb-4 uppercase text-xs">Formas de Pagamento</h4>
                 <div class="grid grid-cols-4 gap-2 opacity-70">
@@ -511,16 +326,32 @@
         </div>
     </footer>
 
-    <!-- LOGICA DO QUIZ E PAGAMENTO -->
+    <!-- MODAL DE LOGIN (Área do Aluno) - NOVO -->
+    <div id="login-modal" class="hidden fixed inset-0 bg-black/80 z-[60] flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-xl w-full max-w-md p-6 relative shadow-2xl modal-animate">
+            <button onclick="document.getElementById('login-modal').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-black">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="user" class="w-8 h-8 text-tech-black"></i>
+                </div>
+                <h3 class="text-xl font-black">Área do Aluno</h3>
+                <p class="text-sm text-gray-500">Acesse seu material exclusivo</p>
+            </div>
+            <form onsubmit="event.preventDefault(); alert('Login indisponível na demonstração. Conecte ao backend para autenticação real.');" class="space-y-4">
+                <div><label class="block text-xs font-bold text-gray-500 uppercase mb-1">E-mail</label><input type="email" placeholder="seu@email.com" class="w-full border border-gray-200 rounded-lg p-3 text-sm outline-none focus:border-tech-yellow focus:ring-1 focus:ring-tech-yellow"></div>
+                <div><label class="block text-xs font-bold text-gray-500 uppercase mb-1">Senha</label><input type="password" placeholder="••••••••" class="w-full border border-gray-200 rounded-lg p-3 text-sm outline-none focus:border-tech-yellow focus:ring-1 focus:ring-tech-yellow"></div>
+                <button type="submit" class="w-full bg-tech-black text-white font-bold py-3 rounded-lg hover:bg-gray-900 transition">ENTRAR</button>
+            </form>
+            <p class="text-xs text-center text-gray-400 mt-6">Ainda não tem acesso? <a href="#" onclick="document.getElementById('login-modal').classList.add('hidden'); window.scrollTo(0,0);" class="text-tech-black font-bold hover:underline">Garanta sua vaga</a></p>
+        </div>
+    </div>
+
     <script>
         lucide.createIcons();
-
         const questions = [
-            // NOVA PERGUNTA INICIAL
-            {
-                text: "Para começar, qual seu objetivo principal?",
-                options: ["Secar Barriga", "Perder Peso", "Desinchar Rosto", "Desinchar o Corpo Todo", "Melhorar Digestão"]
-            },
+            { text: "Para começar, qual seu objetivo principal?", options: ["Secar Barriga", "Perder Peso", "Desinchar Rosto", "Desinchar o Corpo Todo", "Melhorar Digestão"] },
             { text: "Qual seu gênero?", options: ["Feminino", "Masculino"] },
             { text: "Qual sua idade?", options: ["18-29 anos", "30-45 anos", "46-60 anos", "60+ anos"] },
             { text: "Qual seu maior obstáculo hoje?", options: ["Metabolismo lento", "Vontade de Doces", "Falta de Tempo", "Não gosto de salada"] },
@@ -532,208 +363,258 @@
             { text: "Se eu montar um plano de 30 dias prático, você se compromete?", options: ["Vou tentar...", "SIM! Estou comprometida(o)!"] }
         ];
 
-        // CONTEÚDO DO PREVIEW (Resumido)
+        // --- DADOS DO PREVIEW (Resumido para a tela HTML) ---
         const goalsData = {
             "Secar Barriga": {
-                title: "Protocolo Seca Barriga",
-                subtitle: "Queima de Gordura Visceral",
-                phase1_title: "Fase 1: Ativação Metabólica (Dias 1-7)",
-                phase1_desc: "Foco em alimentos com baixo índice glicêmico para reduzir a insulina e queimar gordura abdominal localizada.",
-                breakfast_title: "Shot Matinal + Ovos",
-                breakfast_desc: "1 Limão espremido com gengibre em pó (jejum) + 2 Ovos mexidos com orégano e fio de azeite.",
-                lunch_title: "Proteína Magra + Crucíferos",
-                lunch_desc: "150g de Frango Grelhado + Brócolis e Couve-flor no vapor (ajudam na eliminação de estrogênio).",
-                dinner_title: "Sopa Detox Verde",
-                dinner_desc: "Sopa batida de abobrinha, espinafre e frango desfiado. Evite carboidratos pesados à noite."
+                title: "Protocolo Seca Barriga", subtitle: "Queima de Gordura Visceral",
+                phase1_title: "Fase 1: Ativação Metabólica", phase1_desc: "Foco em alimentos com baixo índice glicêmico.",
+                breakfast_title: "Shot Matinal + Ovos", breakfast_desc: "1 Limão espremido com gengibre + 2 Ovos mexidos.",
+                lunch_title: "Proteína Magra + Crucíferos", lunch_desc: "150g de Frango Grelhado + Brócolis.",
+                dinner_title: "Sopa Detox Verde", dinner_desc: "Sopa batida de abobrinha e espinafre."
             },
-            "Perder Peso": {
-                title: "Protocolo Perda Acelerada",
-                subtitle: "Déficit Calórico Inteligente",
-                phase1_title: "Fase 1: Indução (Dias 1-7)",
-                phase1_desc: "Redução estratégica de carboidratos para forçar o corpo a usar os estoques de gordura como fonte primária de energia.",
-                breakfast_title: "Panqueca de Banana Fit",
-                breakfast_desc: "1 Ovo + 1 Banana amassada + Canela. Misture e faça na frigideira untada com óleo de coco.",
-                lunch_title: "Prato Colorido 50/25/25",
-                lunch_desc: "Metade do prato de folhas, 1/4 de proteína magra e 1/4 de batata doce ou mandioca.",
-                dinner_title: "Salada Completa com Atum",
-                dinner_desc: "Mix de folhas verdes, tomate cereja, pepino e 1 lata de atum em água. Tempere com limão."
-            },
-            "Desinchar Rosto": {
-                title: "Protocolo Face Detox",
-                subtitle: "Drenagem Linfática Facial",
-                phase1_title: "Fase 1: Drenagem Interna (Dias 1-7)",
-                phase1_desc: "Eliminação do excesso de sódio e estímulo da circulação linfática facial através de alimentos diuréticos.",
-                breakfast_title: "Suco Verde Drenante",
-                breakfast_desc: "Bata: 1 folha de couve, 1/2 pepino, 1 maçã e 200ml de água de coco. Não coar se possível.",
-                lunch_title: "Peixe Grelhado sem Sal",
-                lunch_desc: "Tempere o peixe apenas com ervas finas, alho e muito limão. Acompanhe com aspargos grelhados.",
-                dinner_title: "Omelete de Claras",
-                dinner_desc: "3 claras de ovo com espinafre e tomate. Acompanhe com 1 xícara de Chá de Cavalinha."
-            },
-            "Desinchar o Corpo Todo": {
-                title: "Protocolo Desinchaço Total",
-                subtitle: "Combate à Retenção Hídrica",
-                phase1_title: "Fase 1: Diurese Natural (Dias 1-7)",
-                phase1_desc: "Aumento drástico da ingestão de potássio e água para equilibrar a bomba de sódio-potássio e desinchar.",
-                breakfast_title: "Melão e Chá de Hibisco",
-                breakfast_desc: "2 fatias generosas de melão (rico em potássio) + 1 xícara de chá de hibisco sem açúcar.",
-                lunch_title: "Frango com Abobrinha",
-                lunch_desc: "Peito de frango grelhado + Abobrinha refogada (rica em água e fibras). Evite embutidos e enlatados.",
-                dinner_title: "Creme de Abóbora com Gengibre",
-                dinner_desc: "Creme leve de abóbora cabotiá com gengibre ralado (anti-inflamatório potente)."
-            },
-            "Melhorar Digestão": {
-                title: "Protocolo Saúde Intestinal",
-                subtitle: "Combate à Disbiose",
-                phase1_title: "Fase 1: Reparo da Mucosa (Dias 1-7)",
-                phase1_desc: "Remoção temporária de alimentos inflamatórios (glúten/lactose) e introdução de alimentos de fácil digestão.",
-                breakfast_title: "Mamão com Chia e Iogurte",
-                breakfast_desc: "1/2 Papaia (enzimas digestivas) + 1 colher de chia (fibras) + Iogurte Natural (probióticos).",
-                lunch_title: "Carne Cozida com Legumes",
-                lunch_desc: "Carne de panela bem cozida com cenoura e chuchu. Evite saladas cruas em excesso nesta fase.",
-                dinner_title: "Canja de Galinha Nutritiva",
-                dinner_desc: "Substitua o arroz branco por quinoa. Use peito de frango desfiado, cenoura e caldinho leve."
-            }
+            "Perder Peso": { title: "Protocolo Perda Acelerada", subtitle: "Déficit Calórico Inteligente", phase1_title: "Fase 1: Indução", phase1_desc: "Redução de carboidratos.", breakfast_title: "Panqueca Fit", breakfast_desc: "1 Ovo + Banana + Aveia", lunch_title: "Prato 50/25/25", lunch_desc: "Folhas, proteína e batata doce.", dinner_title: "Salada com Atum", dinner_desc: "Mix de folhas e atum." },
+            "Desinchar Rosto": { title: "Protocolo Face Detox", subtitle: "Drenagem Facial", phase1_title: "Fase 1: Drenagem", phase1_desc: "Eliminação de sódio.", breakfast_title: "Suco Verde", breakfast_desc: "Couve, pepino e maçã.", lunch_title: "Peixe Grelhado", lunch_desc: "Peixe e aspargos.", dinner_title: "Omelete de Claras", dinner_desc: "3 claras e espinafre." },
+            "Desinchar o Corpo Todo": { title: "Protocolo Desinchaço", subtitle: "Combate à Retenção", phase1_title: "Fase 1: Diurese", phase1_desc: "Alto potássio.", breakfast_title: "Melão e Hibisco", breakfast_desc: "Melão e chá.", lunch_title: "Frango com Abobrinha", lunch_desc: "Frango grelhado.", dinner_title: "Creme de Abóbora", dinner_desc: "Abóbora e gengibre." },
+            "Melhorar Digestão": { title: "Protocolo Saúde Intestinal", subtitle: "Combate à Disbiose", phase1_title: "Fase 1: Reparo", phase1_desc: "Sem glúten/lactose.", breakfast_title: "Mamão e Chia", breakfast_desc: "Mamão, chia e iogurte.", lunch_title: "Carne Cozida", lunch_desc: "Carne e legumes cozidos.", dinner_title: "Canja Nutritiva", dinner_desc: "Frango e cenoura." }
         };
 
-        // DADOS COMPLETOS PARA O PDF REAL
+        // --- DADOS COMPLETOS E DETALHADOS PARA O PDF ---
         const fullPdfData = {
-             "Secar Barriga": {
-                intro: "Este protocolo foca na redução da gordura visceral através do controle glicêmico e alimentos termogênicos.",
-                weekPlan: [
-                    "Café da Manhã: Shot de limão + Ovos com açafrão",
-                    "Lanche: Chá verde + 5 Castanhas",
-                    "Almoço: Frango grelhado + Brócolis",
-                    "Lanche: Iogurte natural com canela",
-                    "Jantar: Sopa de abobrinha com frango"
+            "Secar Barriga": { 
+                intro: "Este protocolo foca na redução da gordura visceral através do controle glicêmico e alimentos termogênicos. O segredo está em manter a insulina baixa durante a manhã.",
+                schedule: [
+                    { time: "07:30", meal: "Café da Manhã", desc: "Shot de limão com própolis + Ovos mexidos com açafrão" },
+                    { time: "10:30", meal: "Lanche da Manhã", desc: "Chá verde + 5 Castanhas de caju (gorduras boas)" },
+                    { time: "13:00", meal: "Almoço", desc: "150g Frango grelhado + Brócolis e Couve-flor no vapor + Salada de folhas" },
+                    { time: "16:30", meal: "Lanche da Tarde", desc: "Iogurte natural desnatado com canela em pó" },
+                    { time: "19:30", meal: "Jantar", desc: "Sopa Detox Verde (receita abaixo) - Leve e digestiva" }
                 ],
-                recipeTitle: "Receita Chave: Sopa Detox Verde",
-                ingredients: ["2 Abobrinhas", "1 Maço de Espinafre", "300g Peito de Frango", "Alho e Cebola", "Azeite"],
-                prep: "Refogue o frango com temperos. Cozinhe as abobrinhas e bata no liquidificador com espinafre. Misture o creme ao frango.",
-                shoppingList: ["Ovos", "Limão", "Açafrão", "Frango", "Brócolis", "Iogurte Natural", "Abobrinha", "Espinafre", "Castanhas"]
+                recipe: {
+                    title: "Sopa Detox Verde Queima-Gordura",
+                    time: "25 minutos",
+                    temp: "Fogo médio",
+                    yield: "2 porções",
+                    ingredients: [
+                        "2 Abobrinhas médias picadas",
+                        "1 Maço de Espinafre lavado",
+                        "300g Peito de Frango cozido e desfiado",
+                        "2 dentes de Alho picados",
+                        "1/2 Cebola picada",
+                        "1 colher (sopa) de Azeite de Oliva",
+                        "Sal e Pimenta a gosto"
+                    ],
+                    steps: [
+                        "1. Em uma panela, refogue a cebola e o alho no azeite até dourar.",
+                        "2. Adicione as abobrinhas picadas e cubra com água. Deixe cozinhar até ficarem macias (aprox. 15 min).",
+                        "3. Quando estiverem macias, adicione o espinafre e deixe murchar por 2 minutos.",
+                        "4. Espere amornar e bata tudo no liquidificador até virar um creme verde homogêneo.",
+                        "5. Volte o creme para a panela, adicione o frango desfiado, acerte o sal e aqueça por mais 3 minutos.",
+                        "6. Sirva quente. Dica: Adicione um fio de azeite cru no prato."
+                    ]
+                },
+                shoppingList: {
+                    proteinas: ["Ovos (1 dúzia)", "Peito de Frango (1kg)", "Iogurte Natural Desnatado"],
+                    vegetais: ["Limão", "Brócolis", "Couve-flor", "Abobrinha", "Espinafre", "Cebola", "Alho", "Mix de Folhas"],
+                    outros: ["Açafrão (Cúrcuma)", "Canela em pó", "Castanhas de Caju", "Chá Verde", "Azeite de Oliva"]
+                }
             },
-            "Perder Peso": {
-                intro: "Foco em déficit calórico com alta saciedade. Priorizamos proteínas e fibras para manter você cheio.",
-                weekPlan: [
-                    "Café da Manhã: Panqueca de banana fit",
-                    "Lanche: 1 Maçã",
-                    "Almoço: Carne moída + Salada variada + 1/2 batata doce",
-                    "Lanche: Ovo cozido",
-                    "Jantar: Salada com atum"
+            "Perder Peso": { 
+                intro: "Foco em déficit calórico com alta saciedade. Priorizamos proteínas e fibras para manter você cheio por mais tempo, evitando picos de fome.",
+                schedule: [
+                    { time: "08:00", meal: "Café da Manhã", desc: "Panqueca de banana fit + Café preto sem açúcar" },
+                    { time: "10:30", meal: "Lanche da Manhã", desc: "1 Maçã média (fibras)" },
+                    { time: "13:00", meal: "Almoço", desc: "120g Carne moída magra + Salada colorida + 1/2 batata doce cozida" },
+                    { time: "16:00", meal: "Lanche da Tarde", desc: "1 Ovo cozido (proteína pura para saciedade)" },
+                    { time: "19:00", meal: "Jantar", desc: "Salada completa com Atum ou Sardinha" }
                 ],
-                recipeTitle: "Receita Chave: Panqueca de Banana",
-                ingredients: ["1 Banana madura", "1 Ovo", "1 colher de Aveia", "Canela a gosto"],
-                prep: "Amasse a banana, misture com o ovo e a aveia. Coloque em frigideira untada em fogo baixo até dourar.",
-                shoppingList: ["Banana", "Ovos", "Aveia", "Carne Moída", "Batata Doce", "Atum em lata", "Maçã", "Alface", "Tomate"]
+                recipe: {
+                    title: "Panqueca de Banana Fit",
+                    time: "10 minutos",
+                    temp: "Fogo baixo",
+                    yield: "1 porção",
+                    ingredients: [
+                        "1 Banana madura amassada",
+                        "1 Ovo inteiro",
+                        "1 colher (sopa) de Aveia em flocos finos",
+                        "Canela em pó a gosto",
+                        "Fio de óleo de coco para untar"
+                    ],
+                    steps: [
+                        "1. Em um prato fundo, amasse bem a banana com um garfo.",
+                        "2. Adicione o ovo e a aveia. Bata bem com o garfo até misturar tudo.",
+                        "3. Adicione canela a gosto na mistura.",
+                        "4. Aqueça uma frigideira antiaderente em fogo baixo e unte levemente.",
+                        "5. Despeje a massa e tampe. Deixe dourar por cerca de 2-3 minutos.",
+                        "6. Vire com cuidado e deixe dourar o outro lado.",
+                        "7. Sirva imediatamente."
+                    ]
+                },
+                shoppingList: {
+                    proteinas: ["Ovos", "Carne Moída Patinho (500g)", "Atum em lata (água)"],
+                    vegetais: ["Alface", "Tomate", "Cenoura", "Rúcula", "Batata Doce"],
+                    frutas: ["Banana Prata", "Maçã Fuji"],
+                    outros: ["Aveia em Flocos Finos", "Café", "Canela em pó", "Óleo de Coco"]
+                }
             },
-            "Desinchar Rosto": {
-                intro: "Protocolo focado em drenagem linfática natural. Evitamos sódio e focamos em alimentos ricos em água.",
-                weekPlan: [
-                    "Café da Manhã: Suco verde (couve, pepino, maçã)",
-                    "Lanche: Água de coco",
-                    "Almoço: Peixe branco + Aspargos",
-                    "Lanche: Melancia",
-                    "Jantar: Omelete de claras com tomate"
+            "Desinchar Rosto": { 
+                intro: "Protocolo focado em drenagem linfática natural. Evitamos sódio e focamos em alimentos ricos em água e potássio para eliminar a retenção facial.",
+                schedule: [
+                    { time: "08:00", meal: "Café da Manhã", desc: "Suco Verde Drenante (sem coar) + 1 Torrada integral" },
+                    { time: "10:30", meal: "Lanche da Manhã", desc: "200ml Água de coco natural" },
+                    { time: "13:00", meal: "Almoço", desc: "Filé de Peixe branco grelhado + Aspargos ou Vagem no vapor" },
+                    { time: "16:00", meal: "Lanche da Tarde", desc: "Fatia generosa de Melancia (diurético natural)" },
+                    { time: "19:30", meal: "Jantar", desc: "Omelete de claras com tomate e orégano" }
                 ],
-                recipeTitle: "Receita Chave: Suco Drenante Power",
-                ingredients: ["1 folha de Couve", "1/2 Pepino", "1 Maçã verde", "200ml Água de coco", "Hortelã"],
-                prep: "Bata tudo no liquidificador. Tente não coar para manter as fibras que ajudam na eliminação de toxinas.",
-                shoppingList: ["Couve", "Pepino", "Maçã Verde", "Água de Coco", "Peixe Branco", "Aspargos", "Melancia", "Ovos", "Hortelã"]
+                recipe: {
+                    title: "Suco Drenante Power",
+                    time: "5 minutos",
+                    temp: "Gelado",
+                    yield: "1 copo grande",
+                    ingredients: [
+                        "1 folha de Couve manteiga (com talo)",
+                        "1/2 Pepino japonês com casca",
+                        "1 Maçã verde",
+                        "200ml de Água de coco gelada",
+                        "Folhas de Hortelã a gosto"
+                    ],
+                    steps: [
+                        "1. Higienize bem todos os ingredientes.",
+                        "2. Pique a maçã (pode manter a casca) e o pepino.",
+                        "3. Coloque tudo no liquidificador com a água de coco.",
+                        "4. Bata na potência máxima por 2 minutos.",
+                        "5. Tente beber sem coar para aproveitar as fibras que ajudam a varrer as toxinas do intestino.",
+                        "6. Beba imediatamente após o preparo."
+                    ]
+                },
+                shoppingList: {
+                    proteinas: ["Peixe Branco (Tilápia ou Merluza)", "Ovos (usaremos mais claras)"],
+                    vegetais: ["Couve Manteiga", "Pepino Japonês", "Aspargos ou Vagem", "Tomate"],
+                    frutas: ["Maçã Verde", "Melancia", "Água de Coco"],
+                    outros: ["Hortelã", "Torrada Integral", "Orégano"]
+                }
             },
-            "Desinchar o Corpo Todo": {
-                intro: "Estratégia de alto potássio para combater a retenção de sódio. Muita hidratação é fundamental.",
-                weekPlan: [
-                    "Café da Manhã: Melão picado + Chá de Hibisco",
-                    "Lanche: Banana (potássio)",
-                    "Almoço: Frango + Abobrinha refogada",
-                    "Lanche: Abacaxi com raspas de limão",
-                    "Jantar: Creme de abóbora"
+            "Desinchar o Corpo Todo": { 
+                intro: "Estratégia de alto potássio para combater a retenção de sódio sistêmica. Focamos em hidratação e alimentos que estimulam a diurese natural.",
+                schedule: [
+                    { time: "08:00", meal: "Café da Manhã", desc: "Melão picado + 1 xícara de Chá de Cavalinha ou Hibisco" },
+                    { time: "10:30", meal: "Lanche da Manhã", desc: "1 Banana Prata (rica em potássio)" },
+                    { time: "13:00", meal: "Almoço", desc: "Peito de Frango grelhado + Abobrinha refogada (rica em água)" },
+                    { time: "16:00", meal: "Lanche da Tarde", desc: "2 rodelas de Abacaxi com raspas de limão" },
+                    { time: "19:30", meal: "Jantar", desc: "Creme de Abóbora com Gengibre (anti-inflamatório)" }
                 ],
-                recipeTitle: "Receita Chave: Creme de Abóbora Anti-inflamatório",
-                ingredients: ["1/2 Abóbora Cabotiá", "Gengibre ralado", "Cebola", "Azeite"],
-                prep: "Cozinhe a abóbora até desmanchar. Bata com um pouco da água do cozimento. Refogue cebola e gengibre no azeite e misture.",
-                shoppingList: ["Melão", "Hibisco (chá)", "Banana", "Frango", "Abobrinha", "Abacaxi", "Abóbora Cabotiá", "Gengibre", "Cebola"]
+                recipe: {
+                    title: "Creme de Abóbora Anti-inflamatório",
+                    time: "30 minutos",
+                    temp: "Fogo médio",
+                    yield: "3 porções",
+                    ingredients: [
+                        "1/2 Abóbora Cabotiá descascada e picada",
+                        "1 pedaço de Gengibre (3cm) ralado",
+                        "1/2 Cebola picada",
+                        "1 dente de Alho",
+                        "1 colher (sopa) de Azeite",
+                        "500ml de Água ou Caldo de legumes caseiro"
+                    ],
+                    steps: [
+                        "1. Refogue a cebola, o alho e o gengibre no azeite até perfumar a cozinha.",
+                        "2. Adicione a abóbora picada e refogue por mais 2 minutos.",
+                        "3. Cubra com a água e cozinhe até a abóbora desmanchar (aprox. 20 min).",
+                        "4. Espere amornar e bata no liquidificador até ficar bem cremoso.",
+                        "5. Volte para a panela apenas para aquecer.",
+                        "6. Sirva com um fio de azeite por cima."
+                    ]
+                },
+                shoppingList: {
+                    proteinas: ["Peito de Frango (1kg)"],
+                    vegetais: ["Abobrinha", "Abóbora Cabotiá", "Cebola", "Alho", "Gengibre"],
+                    frutas: ["Melão", "Banana Prata", "Abacaxi", "Limão"],
+                    outros: ["Chá de Cavalinha ou Hibisco", "Azeite de Oliva"]
+                }
             },
-            "Melhorar Digestão": {
-                intro: "Protocolo FODMAP reduzido e anti-inflamatório. Foco em recuperar a parede do intestino.",
-                weekPlan: [
-                    "Café da Manhã: Mamão papaia + Iogurte s/ lactose",
-                    "Lanche: Pêra cozida",
-                    "Almoço: Carne de panela + Cenoura cozida + Arroz branco",
-                    "Lanche: Chá de Espinheira Santa",
-                    "Jantar: Canja de galinha (com cenoura e batata)"
+            "Melhorar Digestão": { 
+                intro: "Protocolo FODMAP reduzido e anti-inflamatório. O foco é dar descanso para o sistema digestivo e recuperar a parede do intestino.",
+                schedule: [
+                    { time: "08:00", meal: "Café da Manhã", desc: "1/2 Mamão Papaia (enzimas) + Iogurte sem lactose + Chia" },
+                    { time: "10:30", meal: "Lanche da Manhã", desc: "1 Pêra cozida sem casca (fácil digestão)" },
+                    { time: "13:00", meal: "Almoço", desc: "Carne de panela bem cozida + Cenoura cozida + Arroz branco bem cozido" },
+                    { time: "16:00", meal: "Lanche da Tarde", desc: "Chá de Espinheira Santa ou Camomila" },
+                    { time: "19:00", meal: "Jantar", desc: "Canja de Galinha Nutritiva (com legumes bem cozidos)" }
                 ],
-                recipeTitle: "Receita Chave: Caldo de Ossos (Bone Broth)",
-                ingredients: ["Ossos de frango ou boi", "Vinagre de maçã", "Água", "Legumes a gosto"],
-                prep: "Cozinhe os ossos com água e vinagre por 4h a 8h em fogo baixo. Coe e beba o caldo rico em colágeno.",
-                shoppingList: ["Mamão Papaia", "Iogurte Natural", "Pêra", "Carne para cozinhar", "Cenoura", "Arroz", "Frango (com osso)", "Batata", "Vinagre de Maçã"]
+                recipe: {
+                    title: "Canja de Galinha Reparadora",
+                    time: "40 minutos",
+                    temp: "Fogo baixo",
+                    yield: "3 porções",
+                    ingredients: [
+                        "300g Peito de Frango em cubos",
+                        "1 Cenoura média picada em cubos pequenos",
+                        "2 Batatas médias picadas",
+                        "1/2 xícara de Arroz branco lavado",
+                        "1,5 litro de Água",
+                        "Sal a gosto (evite pimenta neste protocolo)"
+                    ],
+                    steps: [
+                        "1. Em uma panela grande, refogue o frango levemente (sem queimar) com pouco azeite.",
+                        "2. Adicione a água, a cenoura, a batata e o arroz.",
+                        "3. Deixe cozinhar em fogo baixo por cerca de 30-35 minutos, ou até que o arroz e os legumes estejam muito macios.",
+                        "4. O segredo é o cozimento longo para facilitar a digestão.",
+                        "5. Acerte o sal no final. Evite temperos fortes.",
+                        "6. Sirva morno."
+                    ]
+                },
+                shoppingList: {
+                    proteinas: ["Carne para panela (Músculo ou Acém)", "Peito de Frango", "Iogurte sem lactose"],
+                    vegetais: ["Cenoura", "Batata Inglesa"],
+                    frutas: ["Mamão Papaia", "Pêra"],
+                    outros: ["Semente de Chia", "Arroz Branco", "Chá de Espinheira Santa ou Camomila", "Azeite"]
+                }
             }
         };
 
         let currentQuestion = 0;
         let paymentCheckInterval;
+        
+        // --- CONFIGURAÇÃO DO BACKEND ---
+        // ATENÇÃO: Substitua pela URL do seu backend real quando subir (ex: https://api-nutri.render.com)
+        const BACKEND_URL = "http://localhost:3000"; 
 
-        // VERIFICAÇÃO DE MEMÓRIA (LocalStorage) AO INICIAR
         window.onload = function() {
-            // 1. Se já pagou, mostra direto o conteúdo desbloqueado
             if (localStorage.getItem('nutri_payment_status') === 'approved') {
-                updatePreviewContent(); // Atualiza textos antes de mostrar
-                showUnlockedContent();
-            } 
-            // 2. Se já completou o quiz mas não pagou, vai direto para oferta
-            else if (localStorage.getItem('nutri_quiz_completed') === 'true') {
-                updatePreviewContent(); // Atualiza textos antes de mostrar
-                skipToOffer();
-            }
-            // 3. Caso contrário, começa o quiz normal
-            else {
+                updatePreviewContent(); showUnlockedContent();
+            } else if (localStorage.getItem('nutri_quiz_completed') === 'true') {
+                updatePreviewContent(); skipToOffer();
+            } else {
                 renderQuestion();
             }
         };
+
+        function openLoginModal() {
+            document.getElementById('login-modal').classList.remove('hidden');
+        }
 
         function renderQuestion() {
             const q = questions[currentQuestion];
             document.getElementById('question-text').innerText = q.text;
             document.getElementById('step-number').innerText = currentQuestion + 1;
-            
-            const progress = ((currentQuestion + 1) / questions.length) * 100;
-            document.getElementById('progress-bar').style.width = `${progress}%`;
-
-            const optionsContainer = document.getElementById('options-container');
-            optionsContainer.innerHTML = '';
-
+            document.getElementById('progress-bar').style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
             q.options.forEach(opt => {
                 const btn = document.createElement('button');
                 btn.className = 'option-card w-full text-left p-5 rounded-lg border-2 border-gray-100 font-bold text-tech-black transition duration-200 bg-gray-50 flex items-center justify-between group';
                 btn.innerHTML = `<span>${opt}</span> <i data-lucide="chevron-right" class="w-5 h-5 text-gray-300 group-hover:text-tech-yellow transition"></i>`;
                 btn.onclick = () => selectOption(btn);
-                optionsContainer.appendChild(btn);
+                container.appendChild(btn);
             });
             lucide.createIcons();
         }
 
         function selectOption(btn) {
+            if (currentQuestion === 0) localStorage.setItem('nutri_goal', btn.innerText.trim());
             btn.classList.add('option-selected');
-            const icon = btn.querySelector('svg') || btn.querySelector('i');
-            if (icon) {
-                icon.classList.remove('text-gray-300');
-                icon.classList.add('text-tech-yellow');
-            }
-            
-            // LÓGICA PARA SALVAR O OBJETIVO (Pergunta 0)
-            if (currentQuestion === 0) {
-                // Pega apenas o texto, removendo tags HTML se houver
-                const selectedText = btn.innerText.trim();
-                localStorage.setItem('nutri_goal', selectedText);
-            }
-
             setTimeout(() => {
-                if (currentQuestion < questions.length - 1) {
-                    currentQuestion++;
-                    renderQuestion();
-                } else {
-                    finishQuiz();
-                }
+                if (currentQuestion < questions.length - 1) { currentQuestion++; renderQuestion(); }
+                else { finishQuiz(); }
             }, 300);
         }
 
@@ -741,61 +622,28 @@
             localStorage.setItem('nutri_quiz_completed', 'true');
             document.getElementById('quiz-screen').classList.add('hidden');
             document.getElementById('loading-screen').classList.remove('hidden');
-            
-            // Personaliza mensagem de loading baseado no objetivo (opcional, mas legal)
-            const goal = localStorage.getItem('nutri_goal');
-            
-            const texts = [
-                "Processando suas respostas...", 
-                `Personalizando para: ${goal || 'Você'}...`, 
-                "Calculando Taxa Metabólica Basal...", 
-                "Selecionando melhores receitas...", 
-                "Gerando PDF Exclusivo..."
-            ];
-            let textIndex = 0;
-            
-            const interval = setInterval(() => {
-                textIndex++;
-                if (texts[textIndex]) {
-                    document.getElementById('loading-text').innerText = texts[textIndex];
-                }
-            }, 800);
-
             setTimeout(() => {
-                clearInterval(interval);
-                updatePreviewContent(); // AQUI A MÁGICA ACONTECE
+                updatePreviewContent();
                 document.getElementById('loading-screen').classList.add('hidden');
                 document.getElementById('result-screen').classList.remove('hidden');
                 document.getElementById('progress-bar').style.width = '100%';
-                document.getElementById('progress-bar').classList.remove('bg-tech-yellow');
                 document.getElementById('progress-bar').classList.add('bg-green-500');
-            }, 4000);
+            }, 3000);
         }
 
-        // Função para atualizar o HTML do preview com base na escolha
         function updatePreviewContent() {
             const goal = localStorage.getItem('nutri_goal') || 'Perder Peso';
-            const data = goalsData[goal] || goalsData['Perder Peso']; // Fallback
-
-            if (data) {
-                // Atualiza Título e Subtítulo
-                document.getElementById('doc-title').innerText = data.title;
-                document.getElementById('doc-subtitle').innerText = data.subtitle;
-
-                // Atualiza Fase 1
-                document.getElementById('doc-phase1-title').innerHTML = `<span class="bg-tech-yellow w-2 h-6 block mr-2"></span>${data.phase1_title}`;
-                document.getElementById('doc-phase1-desc').innerText = data.phase1_desc;
-
-                // Atualiza Café da Manhã (Visível)
-                document.getElementById('doc-breakfast-title').innerText = data.breakfast_title;
-                document.getElementById('doc-breakfast-desc').innerText = data.breakfast_desc;
-
-                // Atualiza Almoço e Jantar (Borrados)
-                document.getElementById('doc-lunch-title').innerText = data.lunch_title;
-                document.getElementById('doc-lunch-desc').innerText = data.lunch_desc;
-                document.getElementById('doc-dinner-title').innerText = data.dinner_title;
-                document.getElementById('doc-dinner-desc').innerText = data.dinner_desc;
-            }
+            const data = goalsData[goal] || goalsData['Perder Peso'];
+            document.getElementById('doc-title').innerText = data.title;
+            document.getElementById('doc-subtitle').innerText = data.subtitle;
+            document.getElementById('doc-phase1-title').innerHTML = `<span class="bg-tech-yellow w-2 h-6 block mr-2"></span>${data.phase1_title}`;
+            document.getElementById('doc-phase1-desc').innerText = data.phase1_desc;
+            document.getElementById('doc-breakfast-title').innerText = data.breakfast_title;
+            document.getElementById('doc-breakfast-desc').innerText = data.breakfast_desc;
+            document.getElementById('doc-lunch-title').innerText = data.lunch_title;
+            document.getElementById('doc-lunch-desc').innerText = data.lunch_desc;
+            document.getElementById('doc-dinner-title').innerText = data.dinner_title;
+            document.getElementById('doc-dinner-desc').innerText = data.dinner_desc;
         }
 
         function skipToOffer() {
@@ -805,183 +653,182 @@
             document.getElementById('progress-bar').classList.add('bg-green-500');
         }
 
-        // --- LÓGICA DE PAGAMENTO ---
-
-        function startPayment() {
+        async function startPayment() {
             document.getElementById('offer-card').classList.add('hidden');
             document.getElementById('pix-payment-card').classList.remove('hidden');
-            
-            let attempts = 0;
             const statusText = document.getElementById('status-text');
+            statusText.innerText = "Conectando ao banco...";
             
-            paymentCheckInterval = setInterval(() => {
-                attempts++;
+            try {
+                // CHAMA SEU BACKEND REAL
+                const response = await fetch(`${BACKEND_URL}/create-payment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ amount: 24.90, description: "Protocolo NutriOfficial", email: "cliente@email.com" })
+                });
                 
-                if(statusText.innerText === "Aguardando pagamento...") statusText.innerText = "Aguardando pagamento.";
-                else if(statusText.innerText === "Aguardando pagamento.") statusText.innerText = "Aguardando pagamento..";
-                else if(statusText.innerText === "Aguardando pagamento..") statusText.innerText = "Aguardando pagamento...";
-                else statusText.innerText = "Aguardando pagamento...";
+                if (!response.ok) throw new Error("Backend offline");
 
-                if (attempts >= 4) {
-                    clearInterval(paymentCheckInterval);
-                    paymentApproved();
+                const data = await response.json();
+
+                if (data.qr_code_base64) {
+                    const img = document.getElementById('pix-qr-img');
+                    img.src = `data:image/png;base64,${data.qr_code_base64}`;
+                    document.getElementById('pix-copia-cola').value = data.qr_code;
+                    statusText.innerText = "Aguardando pagamento...";
+                    checkPaymentStatus(data.id);
+                } else {
+                    throw new Error("Dados de QR Code inválidos");
                 }
-            }, 2500);
+            } catch (error) {
+                console.error("Erro no pagamento:", error);
+                alert("Erro ao conectar com o servidor de pagamento. Verifique se o Backend está online.");
+                // Retorna ao estado anterior para tentar novamente
+                document.getElementById('offer-card').classList.remove('hidden');
+                document.getElementById('pix-payment-card').classList.add('hidden');
+            }
+        }
+
+        function checkPaymentStatus(id) {
+            paymentCheckInterval = setInterval(async () => {
+                try {
+                    const res = await fetch(`${BACKEND_URL}/payment-status/${id}`);
+                    const data = await res.json();
+                    if (data.status === 'approved') {
+                        clearInterval(paymentCheckInterval);
+                        paymentApproved();
+                    }
+                } catch (e) { console.log('Verificando...'); }
+            }, 5000);
         }
 
         function paymentApproved() {
             const statusText = document.getElementById('status-text');
             statusText.innerHTML = "PAGAMENTO CONFIRMADO!<br><span class='text-[10px] font-normal'>Baixe o PDF para mais detalhes</span>";
-            statusText.classList.remove('text-yellow-800');
-            statusText.classList.add('text-green-700', 'leading-tight');
-            statusText.parentElement.classList.remove('bg-yellow-50', 'border-yellow-200', 'animate-pulse');
-            statusText.parentElement.classList.add('bg-green-100', 'border-green-300');
-            
+            statusText.parentElement.classList.replace('bg-yellow-50', 'bg-green-100');
+            statusText.classList.replace('text-yellow-800', 'text-green-700');
             localStorage.setItem('nutri_payment_status', 'approved');
-
-            setTimeout(() => {
-                showUnlockedContent();
-            }, 1500);
+            setTimeout(showUnlockedContent, 1500);
         }
 
         function showUnlockedContent() {
-            // Garante preview atualizado
             updatePreviewContent();
-
-            document.getElementById('quiz-screen').classList.add('hidden');
-            document.getElementById('main-container').classList.remove('hidden');
-            document.getElementById('result-screen').classList.remove('hidden');
-
-            const overlay = document.getElementById('checkout-overlay');
-            if(overlay) overlay.style.display = 'none';
-
-            const content = document.getElementById('content-to-unlock');
-            if(content) {
-                content.classList.remove('blur-content');
-                content.classList.add('content-unlocked');
-            }
-
+            document.getElementById('checkout-overlay').style.display = 'none';
+            document.getElementById('content-to-unlock').classList.remove('blur-content');
             document.getElementById('download-area').classList.remove('hidden');
-            
-            document.getElementById('progress-bar').style.width = '100%';
-            document.getElementById('progress-bar').classList.add('bg-green-500');
         }
 
         function copyPix() {
-            const pixCode = "00020126360014BR.GOV.BCB.PIX0114+55119999999952040000530398654041.005802BR5913NutriOfficial6009Sao Paulo62070503***63041234";
-            navigator.clipboard.writeText(pixCode).then(() => {
-                alert("Código Pix copiado! Cole no seu aplicativo bancário.");
-            });
+            const code = document.getElementById('pix-copia-cola').value;
+            navigator.clipboard.writeText(code).then(() => alert("Código Pix copiado!"));
         }
 
         function downloadPDF() {
-            // Verifica se o jsPDF foi carregado
-            if (!window.jspdf) {
-                alert("Erro ao carregar biblioteca de PDF. Tente recarregar a página.");
-                return;
-            }
-
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            
             const goal = localStorage.getItem('nutri_goal') || 'Perder Peso';
+            // Garante que o objetivo exista no fullPdfData, se não, usa fallback
             const data = fullPdfData[goal] || fullPdfData['Perder Peso'];
-            const previewData = goalsData[goal] || goalsData['Perder Peso'];
-
-            // --- CABEÇALHO ---
-            doc.setFillColor(255, 204, 0); // Amarelo Tech
-            doc.rect(0, 0, 210, 20, 'F');
             
-            doc.setFontSize(22);
-            doc.setTextColor(0, 0, 0);
-            doc.text("NUTRIOFFICIAL", 105, 13, { align: "center" });
+            // --- HEADER ---
+            doc.setFillColor(255, 204, 0); doc.rect(0, 0, 210, 25, 'F');
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(22); doc.setTextColor(0, 0, 0);
+            doc.text("NUTRIOFFICIAL", 105, 17, { align: "center" });
             
-            // --- TÍTULO DO PLANO ---
-            doc.setFontSize(18);
-            doc.setTextColor(0, 0, 0);
-            doc.text(previewData.title.toUpperCase(), 20, 40);
+            // --- TÍTULO ---
+            doc.setFontSize(18); doc.setTextColor(0, 0, 0);
+            doc.text(`PROTOCOLO: ${goal.toUpperCase()}`, 20, 45);
+            doc.setFontSize(10); doc.setTextColor(100, 100, 100);
+            doc.text("Documento Pessoal e Intransferível", 20, 50);
             
-            doc.setFontSize(12);
-            doc.setTextColor(100, 100, 100);
-            doc.text(`Objetivo: ${previewData.subtitle}`, 20, 48);
-            doc.text("Data: 18/12/2025", 20, 54);
-
-            doc.setLineWidth(0.5);
-            doc.line(20, 60, 190, 60);
-
             // --- INTRODUÇÃO ---
-            doc.setFontSize(14);
-            doc.setTextColor(0, 0, 0);
-            doc.text("Introdução", 20, 70);
-            
-            doc.setFontSize(10);
-            doc.setTextColor(60, 60, 60);
+            doc.setFontSize(12); doc.setTextColor(0, 0, 0);
             const splitIntro = doc.splitTextToSize(data.intro, 170);
-            doc.text(splitIntro, 20, 78);
+            doc.text(splitIntro, 20, 60);
+            
+            let y = 80;
 
-            // --- PLANO SEMANAL ---
-            let yPos = 100;
-            doc.setFontSize(14);
-            doc.setTextColor(0, 0, 0);
-            doc.text("Plano Alimentar Sugerido (Base)", 20, yPos);
-            yPos += 10;
-
-            doc.setFontSize(10);
-            doc.setTextColor(50, 50, 50);
-            data.weekPlan.forEach(item => {
-                doc.text(`• ${item}`, 20, yPos);
-                yPos += 7;
+            // --- CRONOGRAMA ---
+            doc.setFillColor(0, 0, 0); doc.rect(20, y, 170, 8, 'F');
+            doc.setTextColor(255, 255, 255); doc.setFontSize(12);
+            doc.text("CRONOGRAMA SUGERIDO", 25, y + 6);
+            y += 15;
+            
+            doc.setTextColor(0, 0, 0); doc.setFontSize(10);
+            data.schedule.forEach(item => {
+                doc.setFont("helvetica", "bold");
+                doc.text(`${item.time} - ${item.meal}`, 20, y);
+                doc.setFont("helvetica", "normal");
+                const splitDesc = doc.splitTextToSize(item.desc, 170);
+                doc.text(splitDesc, 20, y + 5);
+                y += 15;
             });
 
-            // --- RECEITA CHAVE ---
-            yPos += 10;
-            doc.setFillColor(245, 245, 247);
-            doc.rect(15, yPos, 180, 70, 'F'); // Box cinza
-            
-            doc.setFontSize(12);
-            doc.setTextColor(0, 0, 0);
-            doc.text(data.recipeTitle, 20, yPos + 10);
+            // --- RECEITA ---
+            y += 5;
+            doc.setFillColor(255, 204, 0); doc.rect(20, y, 170, 8, 'F');
+            doc.setTextColor(0, 0, 0); doc.setFont("helvetica", "bold"); doc.setFontSize(12);
+            doc.text("RECEITA EXCLUSIVA", 25, y + 6);
+            y += 15;
 
-            doc.setFontSize(10);
-            doc.text("Ingredientes:", 20, yPos + 20);
-            let ingY = yPos + 25;
-            data.ingredients.forEach(ing => {
-                doc.text(`- ${ing}`, 25, ingY);
-                ingY += 5;
+            doc.setFontSize(14); doc.text(data.recipe.title, 20, y);
+            y += 7;
+            doc.setFontSize(10); doc.setFont("helvetica", "normal");
+            doc.text(`Tempo: ${data.recipe.time} | Temperatura: ${data.recipe.temp} | Rendimento: ${data.recipe.yield}`, 20, y);
+            y += 10;
+
+            doc.setFont("helvetica", "bold"); doc.text("Ingredientes:", 20, y); y += 5;
+            doc.setFont("helvetica", "normal");
+            data.recipe.ingredients.forEach(ing => {
+                doc.text(`• ${ing}`, 25, y);
+                y += 5;
             });
 
-            doc.text("Modo de Preparo:", 100, yPos + 20);
-            const splitPrep = doc.splitTextToSize(data.prep, 85);
-            doc.text(splitPrep, 100, yPos + 25);
-
-            // --- LISTA DE COMPRAS ---
-            yPos += 80;
-            if (yPos > 250) {
-                doc.addPage();
-                yPos = 20;
-            }
-            
-            doc.setFontSize(14);
-            doc.text("Lista de Compras Essencial", 20, yPos);
-            yPos += 10;
-            
-            doc.setFontSize(10);
-            let col = 0;
-            data.shoppingList.forEach((item, index) => {
-                if (index > 0 && index % 5 === 0) {
-                    col++;
-                    yPos -= 35; // Reset Y for new column
-                }
-                doc.text(`[ ] ${item}`, 20 + (col * 50), yPos);
-                yPos += 7;
+            y += 5;
+            doc.setFont("helvetica", "bold"); doc.text("Modo de Preparo:", 20, y); y += 5;
+            doc.setFont("helvetica", "normal");
+            data.recipe.steps.forEach(step => {
+                const splitStep = doc.splitTextToSize(step, 165);
+                doc.text(splitStep, 25, y);
+                y += (splitStep.length * 5) + 2;
             });
 
-            // --- RODAPÉ ---
+            // --- NOVA PÁGINA PARA LISTA DE COMPRAS ---
+            doc.addPage();
+            y = 20;
+            
+            // Header Pag 2
+            doc.setFillColor(255, 204, 0); doc.rect(0, 0, 210, 15, 'F');
+            doc.setFont("helvetica", "bold"); doc.setFontSize(14); doc.setTextColor(0, 0, 0);
+            doc.text("LISTA DE COMPRAS ESSENCIAL", 105, 10, { align: "center" });
+            y = 30;
+
+            // Função auxiliar para listas
+            const addListCategory = (title, items) => {
+                if (!items) return;
+                doc.setFillColor(240, 240, 240); doc.rect(20, y-5, 170, 8, 'F');
+                doc.setFontSize(11); doc.setFont("helvetica", "bold");
+                doc.text(title, 25, y);
+                y += 8;
+                doc.setFontSize(10); doc.setFont("helvetica", "normal");
+                items.forEach(item => {
+                    doc.text(`[ ] ${item}`, 25, y);
+                    y += 6;
+                });
+                y += 5;
+            };
+
+            addListCategory("PROTEÍNAS", data.shoppingList.proteinas);
+            addListCategory("VEGETAIS & LEGUMES", data.shoppingList.vegetais);
+            addListCategory("FRUTAS", data.shoppingList.frutas);
+            addListCategory("OUTROS & TEMPEROS", data.shoppingList.outros);
+
+            // Rodapé Final
             const pageHeight = doc.internal.pageSize.height;
-            doc.setFontSize(8);
-            doc.setTextColor(150, 150, 150);
-            doc.text("Este material é informativo e não substitui acompanhamento médico.", 105, pageHeight - 10, { align: "center" });
-
+            doc.setFontSize(8); doc.setTextColor(150, 150, 150);
+            doc.text("NutriOfficial™ - Todos os direitos reservados.", 105, pageHeight - 10, { align: "center" });
+            
             doc.save(`Protocolo_NutriOfficial_${goal.replace(/\s+/g, '_')}.pdf`);
         }
     </script>
