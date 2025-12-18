@@ -193,7 +193,7 @@
                                     </div>
                                     <div class="bg-gray-100 p-4 rounded-lg mb-4 relative overflow-hidden group">
                                         <!-- QR Code será injetado aqui pelo JS -->
-                                        <img src="" id="pix-qr-img" class="w-48 h-48 mx-auto" alt="Aguardando QR Code...">
+                                        <img src="" id="pix-qr-img" class="w-48 h-48 mx-auto opacity-50 mix-blend-multiply" alt="Aguardando QR Code...">
                                         <p class="text-[10px] text-gray-400 mt-2">Abra o app do seu banco e escaneie</p>
                                     </div>
                                     <div class="mb-4 text-left">
@@ -580,6 +580,10 @@
         window.onload = function() {
             if (localStorage.getItem('nutri_payment_status') === 'approved') {
                 updatePreviewContent(); showUnlockedContent();
+            } else if (localStorage.getItem('nutri_pending_payment_id')) {
+                updatePreviewContent();
+                skipToOffer();
+                restorePendingPayment();
             } else if (localStorage.getItem('nutri_quiz_completed') === 'true') {
                 updatePreviewContent(); skipToOffer();
             } else {
@@ -621,13 +625,32 @@
             localStorage.setItem('nutri_quiz_completed', 'true');
             document.getElementById('quiz-screen').classList.add('hidden');
             document.getElementById('loading-screen').classList.remove('hidden');
+            
+            const goal = localStorage.getItem('nutri_goal');
+            const texts = [
+                "Processando suas respostas...", 
+                `Personalizando para: ${goal || 'Você'}...`, 
+                "Calculando Taxa Metabólica Basal...", 
+                "Selecionando melhores receitas...", 
+                "Construindo PDF Exclusivo..."
+            ];
+            let textIndex = 0;
+            
+            const interval = setInterval(() => {
+                textIndex++;
+                if (texts[textIndex]) {
+                    document.getElementById('loading-text').innerText = texts[textIndex];
+                }
+            }, 800);
+
             setTimeout(() => {
+                clearInterval(interval);
                 updatePreviewContent();
                 document.getElementById('loading-screen').classList.add('hidden');
                 document.getElementById('result-screen').classList.remove('hidden');
                 document.getElementById('progress-bar').style.width = '100%';
                 document.getElementById('progress-bar').classList.add('bg-green-500');
-            }, 3000);
+            }, 4000);
         }
 
         function updatePreviewContent() {
@@ -659,11 +682,10 @@
             statusText.innerText = "Conectando ao banco...";
             
             try {
-                // CHAMA SEU BACKEND REAL
                 const response = await fetch(`${BACKEND_URL}/create-payment`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ amount: 1.00, description: "Protocolo NutriOfficial", email: "cliente@email.com" })
+                    body: JSON.stringify({ amount: 0.10, description: "Protocolo NutriOfficial", email: "cliente@email.com" })
                 });
                 
                 if (!response.ok) throw new Error("Backend offline");
@@ -671,8 +693,15 @@
                 const data = await response.json();
 
                 if (data.qr_code_base64) {
+                    // Salva estado pendente
+                    localStorage.setItem('nutri_pending_payment_id', data.id);
+                    localStorage.setItem('nutri_pending_qr_code', data.qr_code);
+                    localStorage.setItem('nutri_pending_qr_base64', data.qr_code_base64);
+
                     const img = document.getElementById('pix-qr-img');
                     img.src = `data:image/png;base64,${data.qr_code_base64}`;
+                    img.classList.remove('opacity-50', 'mix-blend-multiply'); // Garante limpeza visual
+                    
                     document.getElementById('pix-copia-cola').value = data.qr_code;
                     statusText.innerText = "Aguardando pagamento...";
                     checkPaymentStatus(data.id);
@@ -682,9 +711,28 @@
             } catch (error) {
                 console.error("Erro no pagamento:", error);
                 alert("Erro ao conectar com o servidor de pagamento. Verifique se o Backend está online.");
-                // Retorna ao estado anterior para tentar novamente
                 document.getElementById('offer-card').classList.remove('hidden');
                 document.getElementById('pix-payment-card').classList.add('hidden');
+            }
+        }
+
+        function restorePendingPayment() {
+            const savedQrBase64 = localStorage.getItem('nutri_pending_qr_base64');
+            const savedQrCode = localStorage.getItem('nutri_pending_qr_code');
+            const savedId = localStorage.getItem('nutri_pending_payment_id');
+
+            if (savedId && savedQrBase64) {
+                document.getElementById('offer-card').classList.add('hidden');
+                document.getElementById('pix-payment-card').classList.remove('hidden');
+                
+                const img = document.getElementById('pix-qr-img');
+                img.src = `data:image/png;base64,${savedQrBase64}`;
+                img.classList.remove('opacity-50', 'mix-blend-multiply');
+                
+                document.getElementById('pix-copia-cola').value = savedQrCode;
+                document.getElementById('status-text').innerText = "Restaurando conexão...";
+                
+                checkPaymentStatus(savedId);
             }
         }
 
@@ -706,7 +754,13 @@
             statusText.innerHTML = "PAGAMENTO CONFIRMADO!<br><span class='text-[10px] font-normal'>Baixe o PDF para mais detalhes</span>";
             statusText.parentElement.classList.replace('bg-yellow-50', 'bg-green-100');
             statusText.classList.replace('text-yellow-800', 'text-green-700');
+            
+            // Limpa pendências e salva aprovado
+            localStorage.removeItem('nutri_pending_payment_id');
+            localStorage.removeItem('nutri_pending_qr_code');
+            localStorage.removeItem('nutri_pending_qr_base64');
             localStorage.setItem('nutri_payment_status', 'approved');
+            
             setTimeout(showUnlockedContent, 1500);
         }
 
@@ -726,7 +780,6 @@
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             const goal = localStorage.getItem('nutri_goal') || 'Perder Peso';
-            // Garante que o objetivo exista no fullPdfData, se não, usa fallback
             const data = fullPdfData[goal] || fullPdfData['Perder Peso'];
             
             // --- HEADER ---
