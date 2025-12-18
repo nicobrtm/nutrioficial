@@ -39,7 +39,8 @@
         .option-card:hover { border-color: #FFCC00; background-color: #fffae5; transform: translateY(-2px); }
         .option-selected { background-color: #0F0F0F; color: #FFCC00; border-color: #0F0F0F; }
         .progress-bar { transition: width 0.5s ease-in-out; }
-        .doc-page { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: relative; }
+        /* Aumentei a altura mínima para evitar cortes no mobile */
+        .doc-page { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: relative; min-height: 900px; }
         .doc-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 4rem; color: rgba(0,0,0,0.03); font-weight: 900; pointer-events: none; white-space: nowrap; }
         .checkout-badge { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
         @keyframes scan { 0% { top: 0; } 50% { top: 100%; } 100% { top: 0; } }
@@ -177,7 +178,7 @@
                     <p class="text-xs text-green-100 mt-1">ID do Protocolo: #882910-BR • Válido por 15min</p>
                 </div>
                 <div class="p-4 md:p-8">
-                    <div class="doc-page rounded-lg p-8 min-h-[600px] border border-gray-200 relative overflow-hidden">
+                    <div class="doc-page rounded-lg p-8 min-h-[900px] border border-gray-200 relative overflow-hidden">
                         <div class="doc-watermark">PREVIEW</div>
                         <div class="flex justify-between items-end border-b-2 border-black pb-4 mb-8">
                             <div>
@@ -204,7 +205,7 @@
                         </div>
 
                         <!-- Conteúdo Borrado -->
-                        <div class="mt-8 relative" id="blurred-area">
+                        <div class="mt-8 relative min-h-[500px]" id="blurred-area">
                             <div id="content-to-unlock" class="blur-content space-y-6">
                                 <h3 id="doc-lunch-title" class="font-bold text-lg mb-2">Almoço Estratégico</h3>
                                 <p id="doc-lunch-desc" class="text-sm text-gray-600 text-justify">Para o almoço...</p>
@@ -221,45 +222,57 @@
                             </div>
 
                             <!-- OVERLAY DE CHECKOUT -->
-                            <div id="checkout-overlay" class="absolute inset-0 top-[-20px] bg-white/60 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center">
+                            <div id="checkout-overlay" class="absolute inset-0 top-[-20px] bg-white/60 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center p-4 overflow-y-auto">
                                 <!-- OFERTA -->
-                                <div id="offer-card" class="bg-white text-tech-black p-8 rounded-xl shadow-2xl text-center max-w-md w-full mx-auto border-2 border-tech-yellow relative">
-                                    <div class="absolute -top-4 -right-4 bg-red-600 text-white font-black text-sm px-3 py-1 rounded shadow-lg transform rotate-3">50% OFF HOJE</div>
-                                    <div class="mb-6">
-                                        <div class="w-12 h-12 bg-black rounded-full flex items-center justify-center mx-auto mb-3"><i data-lucide="lock" class="w-6 h-6 text-tech-yellow"></i></div>
-                                        <h3 class="text-xl font-black uppercase mb-1">Desbloquear Plano Completo</h3>
-                                        <p class="text-sm text-gray-500">Acesso vitalício ao seu protocolo + 3 Bônus</p>
-                                    </div>
-                                    <div class="bg-gray-50 rounded-lg p-4 mb-6 border border-gray-100">
-                                        <div class="flex justify-between items-center mb-2">
-                                            <span class="text-sm text-gray-400 line-through">De R$ 47,90</span>
-                                            <span class="text-xs font-bold text-green-600 bg-green-100 px-2 py-0.5 rounded">Economize R$ 23,00</span>
+                                <div id="offer-card" class="bg-white text-tech-black p-6 rounded-2xl shadow-2xl text-center max-w-sm w-full mx-auto border-2 border-tech-yellow relative transform transition-all">
+                                    <div class="absolute -top-4 -right-4 bg-red-600 text-white font-black text-xs px-3 py-1 rounded shadow-lg transform rotate-3">50% OFF HOJE</div>
+                                    
+                                    <div class="mb-4">
+                                        <div class="w-12 h-12 bg-black rounded-full flex items-center justify-center mx-auto mb-2 shadow-lg shadow-yellow-500/20">
+                                            <i data-lucide="lock" class="w-6 h-6 text-tech-yellow"></i>
                                         </div>
-                                        <div class="flex items-end justify-center gap-1">
-                                            <span class="text-lg font-bold mb-1">por apenas</span>
-                                            <span class="text-4xl font-black tracking-tighter">R$ 24,90</span>
-                                        </div>
-                                        <p class="text-xs text-gray-400 mt-1">Pagamento único • Sem mensalidades</p>
+                                        <h3 class="text-lg font-black uppercase leading-tight">Desbloquear Protocolo</h3>
+                                        <p class="text-[11px] text-gray-500">Acesso vitalício + 3 Bônus Exclusivos</p>
                                     </div>
                                     
-                                    <!-- NOVOS BOTÕES DE PAGAMENTO -->
+                                    <!-- Preço -->
+                                    <div class="bg-gray-50 rounded-xl p-3 mb-5 border border-gray-100">
+                                        <div class="flex justify-between items-center mb-1">
+                                            <span class="text-xs text-gray-400 line-through">De R$ 47,90</span>
+                                            <span class="text-[10px] font-bold text-green-600 bg-green-100 px-2 py-0.5 rounded">Economize R$ 23,00</span>
+                                        </div>
+                                        <div class="flex items-end justify-center gap-1">
+                                            <span class="text-sm font-bold mb-1.5">por apenas</span>
+                                            <span class="text-3xl font-black tracking-tighter text-tech-black">R$ 24,90</span>
+                                        </div>
+                                        <p class="text-[10px] text-gray-400 mt-1">Pagamento único • Sem mensalidades</p>
+                                    </div>
+                                    
+                                    <!-- NOVOS BOTÕES DE PAGAMENTO (Visual Profissional e Interativo) -->
                                     <div class="space-y-3 mb-4">
-                                        <button onclick="startPayment('pix')" class="w-full bg-tech-yellow hover:bg-tech-hover text-black font-black py-4 rounded-lg text-lg uppercase tracking-wide transition transform hover:scale-[1.02] shadow-lg flex items-center justify-center gap-2 group">
-                                            <i data-lucide="qr-code" class="w-5 h-5"></i> PAGAR COM PIX (IMEDIATO)
+                                        <button onclick="startPayment('pix')" class="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-bold py-3 rounded-xl text-sm uppercase tracking-wide transition-all shadow-lg shadow-green-500/20 flex items-center justify-center gap-2 group active:scale-95 border border-green-400">
+                                            <i data-lucide="qr-code" class="w-5 h-5"></i> 
+                                            <span>Pagar com PIX</span>
+                                            <span class="text-[9px] bg-white/20 px-1.5 py-0.5 rounded text-white ml-auto">Liberação Imediata</span>
                                         </button>
-                                        <button onclick="startPayment('card')" class="w-full bg-white border-2 border-black hover:bg-gray-50 text-black font-bold py-4 rounded-lg text-lg uppercase tracking-wide transition transform hover:scale-[1.02] shadow-sm flex items-center justify-center gap-2">
-                                            <i data-lucide="credit-card" class="w-5 h-5"></i> PAGAR COM CARTÃO
+                                        
+                                        <button onclick="startPayment('card')" class="w-full bg-white border-2 border-gray-100 hover:border-tech-yellow/50 text-gray-800 font-bold py-3 rounded-xl text-sm uppercase tracking-wide transition-all shadow-sm flex items-center justify-center gap-2 hover:bg-yellow-50/30 active:scale-95 group">
+                                            <i data-lucide="credit-card" class="w-5 h-5 text-gray-400 group-hover:text-tech-yellow transition-colors"></i>
+                                            <span>Pagar com Cartão</span>
                                         </button>
                                     </div>
 
-                                    <div class="grid grid-cols-2 gap-2 text-[10px] text-gray-500 font-medium border-t border-gray-100 pt-4">
-                                        <div class="flex items-center justify-center gap-1"><i data-lucide="shield-check" class="w-3 h-3 text-green-600"></i> Compra Segura</div>
-                                        <div class="flex items-center justify-center gap-1"><i data-lucide="zap" class="w-3 h-3 text-tech-yellow"></i> Entrega Imediata</div>
-                                    </div>
-                                    <div class="flex justify-center gap-3 mt-3 opacity-60 grayscale hover:grayscale-0 transition">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo%E2%80%94pix_powered_by_Banco_Central_%28Brazil%2C_2020%29.svg" class="h-4" alt="Pix">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" class="h-4" alt="Visa">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg" class="h-4" alt="Mastercard">
+                                    <!-- Rodapé de Segurança -->
+                                    <div class="border-t border-gray-100 pt-3">
+                                        <div class="flex items-center justify-center gap-3 text-[10px] text-gray-400 font-medium mb-2">
+                                            <div class="flex items-center gap-1"><i data-lucide="shield-check" class="w-3 h-3 text-green-500"></i> Compra Segura</div>
+                                            <div class="flex items-center gap-1"><i data-lucide="zap" class="w-3 h-3 text-tech-yellow"></i> Entrega Imediata</div>
+                                        </div>
+                                        <div class="flex justify-center gap-2 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo%E2%80%94pix_powered_by_Banco_Central_%28Brazil%2C_2020%29.svg" class="h-3" alt="Pix">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" class="h-3" alt="Visa">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg" class="h-3" alt="Mastercard">
+                                        </div>
                                     </div>
                                 </div>
 
@@ -271,7 +284,7 @@
                                     </div>
                                     <div class="bg-gray-100 p-4 rounded-lg mb-4 relative overflow-hidden group">
                                         <!-- QR Code será injetado aqui pelo JS -->
-                                        <img src="" id="pix-qr-img" class="w-48 h-48 mx-auto opacity-50 mix-blend-multiply" alt="Aguardando QR Code...">
+                                        <img src="" id="pix-qr-img" class="w-48 h-48 mx-auto" alt="Aguardando QR Code...">
                                         <p class="text-[10px] text-gray-400 mt-2">Abra o app do seu banco e escaneie</p>
                                     </div>
                                     <div class="mb-4 text-left">
@@ -804,7 +817,7 @@
                     }
                 } catch (error) {
                     console.error("Erro no checkout:", error);
-                    alert("Erro ao conectar com o servidor.");
+                    alert("Erro ao conectar com o servidor. Verifique se o backend está rodando.");
                 }
             } else {
                 // FLUXO PIX (Original)
