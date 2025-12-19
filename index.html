@@ -175,17 +175,16 @@
 
             <!-- TELA 3: RESULTADO / CHECKOUT -->
             <div id="result-screen" class="hidden relative bg-gray-50">
-                <div class="bg-tech-green text-white p-4 text-center shadow-lg relative z-10">
-                    <p class="font-bold text-lg flex items-center justify-center gap-2"><i data-lucide="check-circle-2" class="w-6 h-6"></i> PROTOCOLO GERADO COM SUCESSO!</p>
-                    <p class="text-xs text-green-100 mt-1">ID do Protocolo: #882910-BR • Válido por 15min</p>
+                <div class="bg-tech-green text-white p-4 text-center shadow-lg relative z-10 font-bold uppercase tracking-widest">
+                    <i data-lucide="check-circle-2" class="inline w-5 h-5 mr-1"></i> Protocolo Gerado com Sucesso!
                 </div>
                 <div class="p-4 md:p-8">
                     <div class="doc-page rounded-lg p-8 min-h-[950px] border border-gray-200 relative overflow-hidden">
                         <div class="doc-watermark">PREVIEW</div>
                         <div class="flex justify-between items-end border-b-2 border-black pb-4 mb-8">
                             <div>
-                                <h1 id="doc-title" class="text-2xl font-black uppercase">Protocolo 30 Dias</h1>
-                                <p class="text-sm text-gray-500">Personalizado para: <span id="doc-subtitle" class="font-bold text-black">Metabolismo Lento</span></p>
+                                <h1 id="doc-title" class="text-2xl font-black uppercase">Protocolo Nutricional</h1>
+                                <p class="text-sm text-gray-500">Personalizado para: <span id="doc-subtitle" class="font-bold text-black"></span></p>
                             </div>
                             <div class="text-right">
                                 <p class="text-xs font-bold text-gray-400 uppercase">Data de Emissão</p>
@@ -225,6 +224,7 @@
 
                             <!-- OVERLAY DE CHECKOUT -->
                             <div id="checkout-overlay" class="absolute inset-0 top-[-20px] bg-white/60 backdrop-blur-[2px] z-10 flex flex-col items-center justify-start pt-16 p-4">
+                                <!-- OFERTA -->
                                 <div id="offer-card" class="bg-white text-tech-black p-6 rounded-2xl shadow-2xl text-center max-w-sm w-full mx-auto border-2 border-tech-yellow relative transform transition-all hover:scale-[1.01] mb-10">
                                     <div class="absolute -top-4 -right-4 bg-red-600 text-white font-black text-xs px-3 py-1 rounded shadow-lg transform rotate-3">50% OFF HOJE</div>
                                     
@@ -236,6 +236,7 @@
                                         <p class="text-[11px] text-gray-500">Acesso vitalício + 3 Bônus Exclusivos</p>
                                     </div>
                                     
+                                    <!-- Preço -->
                                     <div class="bg-gray-50 rounded-xl p-3 mb-5 border border-gray-100">
                                         <div class="flex justify-between items-center mb-1">
                                             <span class="text-xs text-gray-400 line-through">De R$ 47,90</span>
@@ -248,6 +249,7 @@
                                         <p class="text-[10px] text-gray-400 mt-1">Pagamento único • Sem mensalidades</p>
                                     </div>
 
+                                    <!-- INPUT EMAIL OBRIGATÓRIO -->
                                     <div class="mb-4 text-left">
                                         <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1 ml-1">Seu melhor e-mail (para receber o acesso)</label>
                                         <div class="relative">
@@ -256,6 +258,7 @@
                                         </div>
                                     </div>
                                     
+                                    <!-- NOVOS BOTÕES DE PAGAMENTO -->
                                     <div class="space-y-3 mb-4">
                                         <button onclick="startPayment('pix', this)" class="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-bold py-3.5 rounded-xl text-sm uppercase tracking-wide transition-all shadow-lg shadow-green-500/20 flex items-center justify-center gap-2 group active:scale-95 border border-green-400">
                                             <i data-lucide="qr-code" class="w-5 h-5"></i> 
@@ -281,6 +284,7 @@
                                     </div>
                                 </div>
 
+                                <!-- PAGAMENTO PIX REAL -->
                                 <div id="pix-payment-card" class="hidden bg-white text-tech-black p-6 rounded-xl shadow-2xl text-center max-w-sm w-full mx-auto border border-gray-200 relative mb-10">
                                     <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-3">
                                         <h3 class="font-bold text-lg">Pagamento via Pix</h3>
@@ -398,7 +402,7 @@
             </div>
             <form onsubmit="handleLogin(event)" class="space-y-4">
                 <div><label class="block text-xs font-bold text-gray-500 uppercase mb-1">E-mail</label><input type="email" id="login-email" placeholder="seu@email.com" class="w-full border border-gray-200 rounded-lg p-3 text-sm outline-none focus:border-tech-yellow focus:ring-1 focus:ring-tech-yellow" required></div>
-                <div><label class="block text-xs font-bold text-gray-500 uppercase mb-1">Senha (Opcional para demonstração)</label><input type="password" placeholder="••••••••" class="w-full border border-gray-200 rounded-lg p-3 text-sm outline-none focus:border-tech-yellow focus:ring-1 focus:ring-tech-yellow"></div>
+                <div><label class="block text-xs font-bold text-gray-500 uppercase mb-1">Senha (Opcional)</label><input type="password" placeholder="••••••••" class="w-full border border-gray-200 rounded-lg p-3 text-sm outline-none focus:border-tech-yellow focus:ring-1 focus:ring-tech-yellow"></div>
                 <button type="submit" id="login-btn" class="w-full bg-tech-black text-white font-bold py-3 rounded-lg hover:bg-gray-900 transition">ENTRAR</button>
             </form>
             <p class="text-xs text-center text-gray-400 mt-6">Ainda não tem acesso? <a href="#" onclick="document.getElementById('login-modal').classList.add('hidden'); window.scrollTo(0,0);" class="text-tech-black font-bold hover:underline">Garanta sua vaga</a></p>
@@ -441,7 +445,7 @@
             "Melhorar Digestão": { title: "Protocolo Saúde Intestinal", subtitle: "Combate à Disbiose", phase1_title: "Fase 1: Reparo", phase1_desc: "Sem glúten/lactose.", breakfast_title: "Mamão e Chia", breakfast_desc: "Mamão, chia e iogurte.", lunch_title: "Carne Cozida", lunch_desc: "Carne e legumes cozidos.", dinner_title: "Canja Nutritiva", dinner_desc: "Frango e cenoura." }
         };
 
-        // --- DADOS COMPLETOS E DETALHADOS PARA O PDF ---
+        // --- DADOS COMPLETOS E DETALHADOS PARA O PDF (RESTAURADO COMPLETO) ---
         const fullPdfData = {
             "Secar Barriga": { 
                 intro: "Este protocolo foca na redução da gordura visceral através do controle glicêmico e alimentos termogênicos. O segredo está em manter a insulina baixa durante a manhã.",
@@ -482,28 +486,155 @@
                 }
             },
             "Perder Peso": { 
-                intro: "Foco em déficit calórico com alta saciedade. Priorizamos proteínas e fibras para manter você cheio por mais tempo.",
-                schedule: [{ time: "08:00", meal: "Café", desc: "Panqueca de banana fit" }],
-                recipe: { title: "Panqueca Fit", time: "10 min", temp: "Baixa", yield: "1", ingredients: ["Banana", "Ovo", "Aveia"], steps: ["Amasse a banana", "Misture com ovo e aveia", "Grelhe na frigideira"] },
-                shoppingList: { proteinas: ["Ovos", "Carne Patinho"], vegetais: ["Alface", "Tomate", "Cenoura"], frutas: ["Banana", "Maçã"], outros: ["Aveia", "Óleo de Coco"] }
+                intro: "Foco em déficit calórico com alta saciedade. Priorizamos proteínas e fibras para manter você cheio por mais tempo, evitando picos de fome.",
+                schedule: [
+                    { time: "08:00", meal: "Café da Manhã", desc: "Panqueca de banana fit + Café preto sem açúcar" },
+                    { time: "10:30", meal: "Lanche da Manhã", desc: "1 Maçã média (fibras)" },
+                    { time: "13:00", meal: "Almoço", desc: "120g Carne moída magra + Salada colorida + 1/2 batata doce cozida" },
+                    { time: "16:00", meal: "Lanche da Tarde", desc: "1 Ovo cozido (proteína pura para saciedade)" },
+                    { time: "19:00", meal: "Jantar", desc: "Salada completa com Atum ou Sardinha" }
+                ],
+                recipe: {
+                    title: "Panqueca de Banana Fit",
+                    time: "10 minutos",
+                    temp: "Fogo baixo",
+                    yield: "1 porção",
+                    ingredients: [
+                        "1 Banana madura amassada",
+                        "1 Ovo inteiro",
+                        "1 colher (sopa) de Aveia em flocos finos",
+                        "Canela em pó a gosto",
+                        "Fio de óleo de coco para untar"
+                    ],
+                    steps: [
+                        "1. Em um prato fundo, amasse bem a banana com um garfo.",
+                        "2. Adicione o ovo e a aveia. Bata bem com o garfo até misturar tudo.",
+                        "3. Adicione canela a gosto na mistura.",
+                        "4. Aqueça uma frigideira antiaderente em fogo baixo e unte levemente.",
+                        "5. Despeje a massa e tampe. Deixe dourar por cerca de 2-3 minutos.",
+                        "6. Vire com cuidado e deixe dourar o outro lado.",
+                        "7. Sirva imediatamente."
+                    ]
+                },
+                shoppingList: {
+                    proteinas: ["Ovos", "Carne Moída Patinho (500g)", "Atum em lata (água)"],
+                    vegetais: ["Alface", "Tomate", "Cenoura", "Rúcula", "Batata Doce"],
+                    frutas: ["Banana Prata", "Maçã Fuji"],
+                    outros: ["Aveia em Flocos Finos", "Café", "Canela em pó", "Óleo de Coco"]
+                }
             },
             "Desinchar Rosto": { 
-                intro: "Protocolo focado em drenagem linfática natural. Evitamos sódio para eliminar a retenção facial.",
-                schedule: [{ time: "08:00", meal: "Café", desc: "Suco Verde Drenante" }],
-                recipe: { title: "Suco Drenante Power", time: "5 min", temp: "Gelado", yield: "1", ingredients: ["Couve", "Pepino", "Maçã", "Água de Coco"], steps: ["Pique a maçã e o pepino", "Bata tudo no liquidificador", "Beba sem coar"] },
-                shoppingList: { proteinas: ["Tilápia"], vegetais: ["Couve", "Pepino", "Vagem"], frutas: ["Melancia", "Maçã Verde"] }
+                intro: "Protocolo focado em drenagem linfática natural. Evitamos sódio e focamos em alimentos ricos em água e potássio para eliminar a retenção facial.",
+                schedule: [
+                    { time: "08:00", meal: "Café da Manhã", desc: "Suco Verde Drenante (sem coar) + 1 Torrada integral" },
+                    { time: "10:30", meal: "Lanche da Manhã", desc: "200ml Água de coco natural" },
+                    { time: "13:00", meal: "Almoço", desc: "Filé de Peixe branco grelhado + Aspargos ou Vagem no vapor" },
+                    { time: "16:00", meal: "Lanche da Tarde", desc: "Fatia generosa de Melancia (diurético natural)" },
+                    { time: "19:30", meal: "Jantar", desc: "Omelete de claras com tomate e orégano" }
+                ],
+                recipe: {
+                    title: "Suco Drenante Power",
+                    time: "5 minutos",
+                    temp: "Gelado",
+                    yield: "1 copo grande",
+                    ingredients: [
+                        "1 folha de Couve manteiga (com talo)",
+                        "1/2 Pepino japonês com casca",
+                        "1 Maçã verde",
+                        "200ml de Água de coco gelada",
+                        "Folhas de Hortelã a gosto"
+                    ],
+                    steps: [
+                        "1. Higienize bem todos os ingredientes.",
+                        "2. Pique a maçã (pode manter a casca) e o pepino.",
+                        "3. Coloque tudo no liquidificador com a água de coco.",
+                        "4. Bata na potência máxima por 2 minutos.",
+                        "5. Tente beber sem coar para aproveitar as fibras que ajudam a varrer as toxinas do intestino.",
+                        "6. Beba imediatamente após o preparo."
+                    ]
+                },
+                shoppingList: {
+                    proteinas: ["Peixe Branco (Tilápia ou Merluza)", "Ovos (usaremos mais claras)"],
+                    vegetais: ["Couve Manteiga", "Pepino Japonês", "Aspargos ou Vagem", "Tomate"],
+                    frutas: ["Maçã Verde", "Melancia", "Água de Coco"],
+                    outros: ["Hortelã", "Torrada Integral", "Orégano"]
+                }
             },
             "Desinchar o Corpo Todo": { 
-                intro: "Estratégia de alto potássio para combater a retenção de sódio sistêmica.",
-                schedule: [{ time: "08:00", meal: "Café", desc: "Melão picado + Chá de Hibisco" }],
-                recipe: { title: "Creme de Abóbora Anti-inflamatório", time: "30 min", temp: "Média", yield: "3", ingredients: ["Abóbora", "Gengibre", "Cebola"], steps: ["Refogue cebola e gengibre", "Cozinhe a abóbora até desmanchar", "Bata no liquidificador"] },
-                shoppingList: { proteinas: ["Frango"], vegetais: ["Abobrinha", "Abóbora", "Gengibre"], frutas: ["Melão", "Banana", "Abacaxi"] }
+                intro: "Estratégia de alto potássio para combater a retenção de sódio sistêmica. Focamos em hidratação e alimentos que estimulam a diurese natural.",
+                schedule: [
+                    { time: "08:00", meal: "Café da Manhã", desc: "Melão picado + 1 xícara de Chá de Cavalinha ou Hibisco" },
+                    { time: "10:30", meal: "Lanche da Manhã", desc: "1 Banana Prata (rica em potássio)" },
+                    { time: "13:00", meal: "Almoço", desc: "Peito de Frango grelhado + Abobrinha refogada (rica em água)" },
+                    { time: "16:00", meal: "Lanche da Tarde", desc: "2 rodelas de Abacaxi com raspas de limão" },
+                    { time: "19:30", meal: "Jantar", desc: "Creme de Abóbora com Gengibre (anti-inflamatório)" }
+                ],
+                recipe: {
+                    title: "Creme de Abóbora Anti-inflamatório",
+                    time: "30 minutos",
+                    temp: "Fogo médio",
+                    yield: "3 porções",
+                    ingredients: [
+                        "1/2 Abóbora Cabotiá descascada e picada",
+                        "1 pedaço de Gengibre (3cm) ralado",
+                        "1/2 Cebola picada",
+                        "1 dente de Alho",
+                        "1 colher (sopa) de Azeite",
+                        "500ml de Água ou Caldo de legumes caseiro"
+                    ],
+                    steps: [
+                        "1. Refogue a cebola, o alho e o gengibre no azeite até perfumar a cozinha.",
+                        "2. Adicione a abóbora picada e refogue por mais 2 minutos.",
+                        "3. Cubra com a água e cozinhe até a abóbora desmanchar (aprox. 20 min).",
+                        "4. Espere amornar e bata no liquidificador até ficar bem cremoso.",
+                        "5. Volte para a panela apenas para aquecer.",
+                        "6. Sirva com um fio de azeite por cima."
+                    ]
+                },
+                shoppingList: {
+                    proteinas: ["Peito de Frango (1kg)"],
+                    vegetais: ["Abobrinha", "Abóbora Cabotiá", "Cebola", "Alho", "Gengibre"],
+                    frutas: ["Melão", "Banana Prata", "Abacaxi", "Limão"],
+                    outros: ["Chá de Cavalinha ou Hibisco", "Azeite de Oliva"]
+                }
             },
             "Melhorar Digestão": { 
-                intro: "Protocolo FODMAP reduzido para dar descanso ao sistema digestivo.",
-                schedule: [{ time: "08:00", meal: "Café", desc: "Mamão Papaia + Chia" }],
-                recipe: { title: "Canja de Galinha Reparadora", time: "40 min", temp: "Baixa", yield: "3", ingredients: ["Frango", "Cenoura", "Arroz Branco"], steps: ["Refogue o frango", "Cozinhe com legumes e arroz por 35 min", "Sirva morno"] },
-                shoppingList: { proteinas: ["Carne Músculo", "Iogurte s/ Lactose"], vegetais: ["Cenoura", "Batata"], frutas: ["Mamão", "Pêra"], outros: ["Chia", "Arroz Branco"] }
+                intro: "Protocolo FODMAP reduzido e anti-inflamatório. O foco é dar descanso para o sistema digestivo e recuperar a parede do intestino.",
+                schedule: [
+                    { time: "08:00", meal: "Café da Manhã", desc: "1/2 Mamão Papaia (enzimas) + Iogurte sem lactose + Chia" },
+                    { time: "10:30", meal: "Lanche da Manhã", desc: "1 Pêra cozida sem casca (fácil digestão)" },
+                    { time: "13:00", meal: "Almoço", desc: "Carne de panela bem cozida + Cenoura cozida + Arroz branco bem cozido" },
+                    { time: "16:00", meal: "Lanche da Tarde", desc: "Chá de Espinheira Santa ou Camomila" },
+                    { time: "19:00", meal: "Jantar", desc: "Canja de Galinha Nutritiva (com legumes bem cozidos)" }
+                ],
+                recipe: {
+                    title: "Canja de Galinha Reparadora",
+                    time: "40 minutos",
+                    temp: "Fogo baixo",
+                    yield: "3 porções",
+                    ingredients: [
+                        "300g Peito de Frango em cubos",
+                        "1 Cenoura média picada em cubos pequenos",
+                        "2 Batatas médias picadas",
+                        "1/2 xícara de Arroz branco lavado",
+                        "1,5 litro de Água",
+                        "Sal a gosto (evite pimenta neste protocolo)"
+                    ],
+                    steps: [
+                        "1. Em uma panela grande, refogue o frango levemente (sem queimar) com pouco azeite.",
+                        "2. Adicione a água, a cenoura, a batata e o arroz.",
+                        "3. Deixe cozinhar em fogo baixo por cerca de 30-35 minutos, ou até que o arroz e os legumes estejam muito macios.",
+                        "4. O segredo é o cozimento longo para facilitar a digestão.",
+                        "5. Acerte o sal no final. Evite temperos fortes.",
+                        "6. Sirva morno."
+                    ]
+                },
+                shoppingList: {
+                    proteinas: ["Carne para panela (Músculo ou Acém)", "Peito de Frango", "Iogurte sem lactose"],
+                    vegetais: ["Cenoura", "Batata Inglesa"],
+                    frutas: ["Mamão Papaia", "Pêra"],
+                    outros: ["Semente de Chia", "Arroz Branco", "Chá de Espinheira Santa ou Camomila", "Azeite"]
+                }
             }
         };
 
@@ -523,7 +654,7 @@
                 if (goal) localStorage.setItem('nutri_goal', goal);
                 if (email) localStorage.setItem('customer_email', email);
                 
-                // Só envia o email se NÃO veio de um link de email (evita loop)
+                // Só dispara o email se NÃO vier de um link de retorno (evita loop)
                 if (email && !fromEmail) {
                     fetch(`${BACKEND_URL}/send-email`, {
                         method: 'POST',
@@ -547,7 +678,13 @@
             }
         };
 
-        function startQuiz() { document.getElementById('start-screen').classList.add('hidden'); document.getElementById('quiz-screen').classList.remove('hidden'); document.getElementById('progress-container').classList.remove('hidden'); renderQuestion(); }
+        function startQuiz() { 
+            document.getElementById('start-screen').classList.add('hidden'); 
+            document.getElementById('quiz-screen').classList.remove('hidden'); 
+            document.getElementById('progress-container').classList.remove('hidden'); 
+            renderQuestion(); 
+        }
+
         function openLoginModal() { document.getElementById('login-modal').classList.remove('hidden'); }
         
         function renderQuestion() {
@@ -600,13 +737,19 @@
         function skipToOffer() { document.getElementById('quiz-screen').classList.add('hidden'); document.getElementById('result-screen').classList.remove('hidden'); }
 
         async function startPayment(type, btn) {
-            const email = document.getElementById('customer-email').value;
-            if (!email || !email.includes('@')) { alert("Digite um e-mail válido para receber o acesso."); return; }
+            const emailInput = document.getElementById('customer-email');
+            const email = emailInput.value;
+            if (!email || !email.includes('@')) { 
+                alert("Digite um e-mail válido para receber o acesso."); 
+                emailInput.focus();
+                return; 
+            }
             const goal = localStorage.getItem('nutri_goal') || "Perder Peso";
             const originalText = btn.innerHTML;
             btn.innerHTML = "Iniciando..."; btn.disabled = true;
 
             try {
+                // CORREÇÃO: Endpoint mapeado conforme o tipo de botão
                 const endpoint = type === 'card' ? '/create-preference' : '/create-payment';
                 const response = await fetch(`${BACKEND_URL}${endpoint}`, {
                     method: 'POST',
@@ -614,8 +757,12 @@
                     body: JSON.stringify({ amount: 0.10, email, description: goal, returnUrl: window.location.origin })
                 });
                 const data = await response.json();
-                if (type === 'card') window.location.href = data.init_point;
-                else {
+                
+                // Redireciona para o checkout completo (Cartão) ou mostra Pix
+                if (type === 'card') {
+                    if (data.init_point) window.location.href = data.init_point;
+                    else throw new Error("Link de checkout não gerado");
+                } else {
                     document.getElementById('offer-card').classList.add('hidden');
                     document.getElementById('pix-payment-card').classList.remove('hidden');
                     document.getElementById('pix-qr-img').src = `data:image/png;base64,${data.qr_code_base64}`;
@@ -623,18 +770,24 @@
                     localStorage.setItem('nutri_pending_email', email);
                     checkStatus(data.id, email, goal);
                 }
-            } catch (e) { alert("Erro de conexão com o servidor."); btn.innerHTML = originalText; btn.disabled = false; }
+            } catch (e) { 
+                alert("Erro ao conectar com o servidor."); 
+                btn.innerHTML = originalText; 
+                btn.disabled = false; 
+            }
         }
 
         function checkStatus(id, email, goal) {
             paymentCheckInterval = setInterval(async () => {
-                const res = await fetch(`${BACKEND_URL}/payment-status/${id}`);
-                const data = await res.json();
-                if (data.status === 'approved') {
-                    clearInterval(paymentCheckInterval);
-                    fetch(`${BACKEND_URL}/send-email`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, protocolTitle: goal }) });
-                    paymentApproved();
-                }
+                try {
+                    const res = await fetch(`${BACKEND_URL}/payment-status/${id}`);
+                    const data = await res.json();
+                    if (data.status === 'approved') {
+                        clearInterval(paymentCheckInterval);
+                        fetch(`${BACKEND_URL}/send-email`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, protocolTitle: goal }) });
+                        paymentApproved();
+                    }
+                } catch(e) {}
             }, 5000);
         }
 
@@ -646,7 +799,6 @@
             updatePreviewContent();
         }
 
-        // --- CORREÇÃO DA ÁREA DE MEMBROS ---
         async function handleLogin(e) {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
@@ -654,61 +806,110 @@
             btn.innerHTML = "Verificando..."; btn.disabled = true;
 
             try {
+                // CORREÇÃO: Rota de login real
                 const res = await fetch(`${BACKEND_URL}/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email })
                 });
-                
-                // Persistência: libera se o email bate com a compra salva ou se o status local é aprovado
-                if (localStorage.getItem('nutri_payment_status') === 'approved' || email === localStorage.getItem('customer_email')) {
+                const data = await res.json();
+
+                // Persistência: libera se o e-mail bate ou se já tem compra salva
+                if (data.success && (localStorage.getItem('nutri_payment_status') === 'approved' || email === localStorage.getItem('customer_email'))) {
                     paymentApproved();
                     document.getElementById('login-modal').classList.add('hidden');
                     document.getElementById('start-screen').classList.add('hidden');
                     alert("Bem-vindo de volta! Acesso liberado.");
                 } else {
-                    alert("Compra não encontrada para este e-mail neste dispositivo. Acesse pelo link enviado no seu e-mail.");
+                    alert("Compra não encontrada para este e-mail neste dispositivo. Utilize o link enviado no seu e-mail.");
                 }
             } catch (err) {
-                alert("Erro ao conectar com o servidor.");
+                alert("Erro ao ligar ao servidor.");
             } finally { btn.innerHTML = "ENTRAR"; btn.disabled = false; }
         }
 
         function copyPix() { navigator.clipboard.writeText(document.getElementById('pix-copia-cola').value); alert("Pix copiado!"); }
 
         function downloadPDF() {
-            if (!window.jspdf) return alert("Aguarde o carregamento do gerador de PDF.");
+            if (!window.jspdf) return alert("Erro ao carregar gerador de PDF.");
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             const goal = localStorage.getItem('nutri_goal') || 'Perder Peso';
             const data = fullPdfData[goal] || fullPdfData['Perder Peso'];
             
-            // Design do PDF rico
+            // Design do PDF rico e fiel aos dados restaurados
             doc.setFillColor(255, 204, 0); doc.rect(0, 0, 210, 25, 'F');
-            doc.setFontSize(22); doc.setTextColor(0,0,0); doc.text("NUTRIOFFICIAL", 105, 17, { align: "center" });
-            doc.setFontSize(16); doc.text("PROTOCOLO: " + goal.toUpperCase(), 20, 45);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(22); doc.setTextColor(0, 0, 0);
+            doc.text("NUTRIOFFICIAL", 105, 17, { align: "center" });
             
-            doc.setFontSize(12);
+            doc.setFontSize(16); doc.text(`PROTOCOLO: ${goal.toUpperCase()}`, 20, 45);
+            doc.setFontSize(10); doc.setTextColor(100, 100, 100);
+            doc.text("Documento Pessoal e Intransferível", 20, 50);
+            
+            doc.setFontSize(12); doc.setTextColor(0, 0, 0);
             const splitIntro = doc.splitTextToSize(data.intro, 170);
             doc.text(splitIntro, 20, 60);
-
-            let y = 85;
-            doc.setFontSize(14); doc.text("CRONOGRAMA", 20, y); y += 10;
-            doc.setFontSize(10);
-            (data.schedule || []).forEach(i => {
-                doc.text(`${i.time} - ${i.meal}: ${i.desc}`, 20, y);
-                y += 8;
+            
+            let y = 80;
+            doc.setFillColor(0, 0, 0); doc.rect(20, y, 170, 8, 'F');
+            doc.setTextColor(255, 255, 255); doc.setFontSize(12);
+            doc.text("CRONOGRAMA SUGERIDO", 25, y + 6);
+            y += 15;
+            
+            doc.setTextColor(0, 0, 0); doc.setFontSize(10);
+            (data.schedule || []).forEach(item => {
+                doc.setFont("helvetica", "bold");
+                doc.text(`${item.time} - ${item.meal}`, 20, y);
+                doc.setFont("helvetica", "normal");
+                const splitDesc = doc.splitTextToSize(item.desc, 170);
+                doc.text(splitDesc, 20, y + 5);
+                y += 15;
             });
 
+            y += 5;
+            doc.setFillColor(255, 204, 0); doc.rect(20, y, 170, 8, 'F');
+            doc.setTextColor(0, 0, 0); doc.setFont("helvetica", "bold"); doc.setFontSize(12);
+            doc.text("RECEITA EXCLUSIVA", 25, y + 6);
+            y += 15;
+
+            doc.setFontSize(14); doc.text(data.recipe.title, 20, y);
             y += 10;
-            doc.setFontSize(14); doc.text("RECEITA PRINCIPAL: " + (data.recipe?.title || "Sugerida"), 20, y); y += 10;
-            doc.setFontSize(10);
-            doc.text("Preparo:", 20, y); y += 5;
-            (data.recipe?.steps || []).forEach(step => {
-                const lines = doc.splitTextToSize(step, 170);
-                doc.text(lines, 25, y);
-                y += lines.length * 5 + 2;
+            doc.setFontSize(10); doc.setFont("helvetica", "normal");
+            (data.recipe.steps || []).forEach(step => {
+                const splitStep = doc.splitTextToSize(step, 165);
+                doc.text(splitStep, 25, y);
+                y += (splitStep.length * 5) + 2;
             });
+
+            doc.addPage();
+            y = 20;
+            doc.setFillColor(255, 204, 0); doc.rect(0, 0, 210, 15, 'F');
+            doc.setFont("helvetica", "bold"); doc.text("LISTA DE COMPRAS ESSENCIAL", 105, 10, { align: "center" });
+            y = 30;
+
+            const addListCategory = (title, items) => {
+                if (!items) return;
+                doc.setFillColor(240, 240, 240); doc.rect(20, y-5, 170, 8, 'F');
+                doc.setFontSize(11); doc.setFont("helvetica", "bold");
+                doc.text(title, 25, y);
+                y += 8;
+                doc.setFontSize(10); doc.setFont("helvetica", "normal");
+                items.forEach(item => {
+                    doc.text(`[ ] ${item}`, 25, y);
+                    y += 6;
+                });
+                y += 5;
+            };
+
+            addListCategory("PROTEÍNAS", data.shoppingList.proteinas);
+            addListCategory("VEGETAIS & LEGUMES", data.shoppingList.vegetais);
+            addListCategory("FRUTAS", data.shoppingList.frutas);
+            addListCategory("OUTROS & TEMPEROS", data.shoppingList.outros);
+
+            const pageHeight = doc.internal.pageSize.height;
+            doc.setFontSize(8); doc.setTextColor(150, 150, 150);
+            doc.text("NutriOfficial™ - Todos os direitos reservados.", 105, pageHeight - 10, { align: "center" });
 
             doc.save(`Protocolo_NutriOfficial_${goal.replace(/\s+/g, '_')}.pdf`);
         }
