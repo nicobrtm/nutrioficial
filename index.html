@@ -805,7 +805,7 @@
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ 
-                            amount: 0.10, 
+                            amount: 24.90, 
                             description: "Protocolo NutriOfficial", 
                             returnUrl: window.location.origin,
                             email: email
@@ -834,7 +834,7 @@
                     const response = await fetch(`${BACKEND_URL}/create-payment`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ amount: 24.90, description: "Protocolo NutriOfficial", email: email })
+                        body: JSON.stringify({ amount: 0.10, description: "Protocolo NutriOfficial", email: email })
                     });
                     
                     if (!response.ok) throw new Error("Backend offline");
