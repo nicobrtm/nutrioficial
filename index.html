@@ -611,7 +611,7 @@
                 const response = await fetch(`${BACKEND_URL}${endpoint}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ amount: 24.90, email, description: goal, returnUrl: window.location.origin })
+                    body: JSON.stringify({ amount: 0.10, email, description: goal, returnUrl: window.location.origin })
                 });
                 const data = await response.json();
                 if (type === 'card') window.location.href = data.init_point;
