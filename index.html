@@ -454,7 +454,7 @@
             "Melhorar Digestão": { title: "Protocolo Saúde Intestinal", subtitle: "Combate à Disbiose", phase1_title: "Fase 1: Reparo", phase1_desc: "Sem glúten/lactose.", breakfast_title: "Mamão e Chia", breakfast_desc: "Mamão, chia e iogurte.", lunch_title: "Carne Cozida", lunch_desc: "Carne e legumes cozidos.", dinner_title: "Canja Nutritiva", dinner_desc: "Frango e cenoura." }
         };
 
-        // --- DADOS COMPLETOS E DETALHADOS PARA O PDF ---
+        // --- DADOS COMPLETOS E DETALHADOS PARA O PDF (RESTAURADO COMPLETO) ---
         const fullPdfData = {
             "Secar Barriga": { 
                 intro: "Este protocolo foca na redução da gordura visceral através do controle glicêmico e alimentos termogênicos. O segredo está em manter a insulina baixa durante a manhã.",
@@ -671,6 +671,7 @@
                      });
                 }
                 paymentApproved();
+                // Garante que a capa está oculta
                 document.getElementById('start-screen').classList.add('hidden');
                 return;
             }
@@ -688,6 +689,8 @@
                 updatePreviewContent(); skipToOffer();
                 document.getElementById('start-screen').classList.add('hidden');
             } else {
+                // Novo usuário: Capa visível por padrão, Quiz oculto por padrão
+                // renderQuestion() apenas prepara os dados
                 renderQuestion();
             }
         };
@@ -857,11 +860,25 @@
                         localStorage.setItem('nutri_pending_qr_code', data.qr_code);
                         localStorage.setItem('nutri_pending_qr_base64', data.qr_code_base64);
                         localStorage.setItem('nutri_pending_email', email); // SALVA O EMAIL
-
-                        // A verificação agora acontece na função unificada checkPaymentStatus
-                        checkPaymentStatus(data.id);
-                    } else {
-                        throw new Error("Dados de QR Code inválidos");
+                        
+                        const checkInterval = setInterval(async () => {
+                            const res = await fetch(`${BACKEND_URL}/payment-status/${data.id}`);
+                            const statusData = await res.json();
+                            if (statusData.status === 'approved') {
+                                clearInterval(checkInterval);
+                                // TENTA enviar email, mas se falhar, CONTINUA e libera o PDF (try/catch)
+                                try {
+                                    await fetch(`${BACKEND_URL}/send-email`, {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({ email: email, protocolTitle: "Protocolo NutriOfficial" })
+                                    });
+                                } catch (emailError) {
+                                    console.error("Falha no envio de email, mas liberando acesso...", emailError);
+                                }
+                                paymentApproved();
+                            }
+                        }, 5000);
                     }
                 } catch (error) {
                     alert("Erro ao gerar Pix.");
@@ -899,14 +916,16 @@
                     if (data.status === 'approved') {
                         clearInterval(paymentCheckInterval);
                         
-                        // Tenta enviar o e-mail usando o e-mail salvo
+                        // Tenta enviar o e-mail usando o e-mail salvo (com proteção try/catch)
                         const savedEmail = localStorage.getItem('nutri_pending_email');
                         if (savedEmail) {
-                             await fetch(`${BACKEND_URL}/send-email`, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ email: savedEmail, protocolTitle: "Protocolo NutriOfficial" })
-                            });
+                             try {
+                                 await fetch(`${BACKEND_URL}/send-email`, {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ email: savedEmail, protocolTitle: "Protocolo NutriOfficial" })
+                                });
+                             } catch (e) { console.error("Email falhou no restore, liberando..."); }
                         }
                         
                         paymentApproved();
