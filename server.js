@@ -7,13 +7,16 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Verificação de Segurança das Chaves
+if (!process.env.MP_ACCESS_TOKEN) console.warn("⚠️ MP_ACCESS_TOKEN não encontrado!");
+if (!process.env.RESEND_API_KEY) console.warn("⚠️ RESEND_API_KEY não encontrada!");
+
 // Configura Mercado Pago
 const client = new MercadoPagoConfig({ 
     accessToken: process.env.MP_ACCESS_TOKEN 
 });
 
-// Configura Resend (E-mail Profissional)
-// A chave RESEND_API_KEY deve estar nas Variáveis de Ambiente da Vercel
+// Configura Resend
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 app.use(express.json());
@@ -28,13 +31,24 @@ app.get('/', (req, res) => {
 app.post('/create-payment', async (req, res) => {
     try {
         const { email, amount, description } = req.body;
+        
+        // Garante que o valor é um número válido
+        const transactionAmount = parseFloat(amount);
+        if (isNaN(transactionAmount)) {
+            throw new Error("Valor do pagamento inválido");
+        }
+
         const payment = new Payment(client);
 
         const body = {
-            transaction_amount: Number(amount),
+            transaction_amount: transactionAmount,
             description: description || 'Protocolo NutriOfficial',
             payment_method_id: 'pix',
-            payer: { email: email },
+            payer: { 
+                email: email,
+                first_name: 'Cliente', // Adicionado para evitar erro de validação
+                last_name: 'Nutri'
+            },
             date_of_expiration: new Date(Date.now() + 30 * 60 * 1000).toISOString()
         };
 
@@ -48,8 +62,13 @@ app.post('/create-payment', async (req, res) => {
             ticket_url: result.point_of_interaction.transaction_data.ticket_url
         });
     } catch (error) {
-        console.error("Erro Pix:", error);
-        res.status(500).json({ error: 'Erro ao gerar Pix' });
+        console.error("Erro Detalhado Pix:", JSON.stringify(error, null, 2));
+        // Retorna o erro real para facilitar a correção
+        res.status(500).json({ 
+            error: 'Erro ao gerar Pix', 
+            details: error.message,
+            api_response: error.cause || error
+        });
     }
 });
 
@@ -69,7 +88,6 @@ app.post('/create-preference', async (req, res) => {
                 }
             ],
             payer: { email: email },
-            // Retorna o cliente para o site com status e email na URL
             back_urls: {
                 success: `${returnUrl}/?status=approved&email=${email}`,
                 failure: `${returnUrl}/?status=failure`,
@@ -84,7 +102,7 @@ app.post('/create-preference', async (req, res) => {
 
     } catch (error) {
         console.error("Erro Preference:", error);
-        res.status(500).json({ error: 'Erro ao criar checkout' });
+        res.status(500).json({ error: 'Erro ao criar checkout de cartão', details: error.message });
     }
 });
 
@@ -111,7 +129,6 @@ app.post('/send-email', async (req, res) => {
 
     try {
         const data = await resend.emails.send({
-            // IMPORTANTE: Este domínio deve estar verificado no painel do Resend
             from: 'NutriOfficial <suporte@receitas-oficial.com.br>', 
             to: [email],
             subject: '✅ Seu Acesso Oficial Liberado! (Protocolo NutriOfficial)',
@@ -142,12 +159,10 @@ app.post('/send-email', async (req, res) => {
 
     } catch (error) {
         console.error("Erro Resend:", error);
-        // Retornamos sucesso false mas sem erro 500 para não quebrar o fluxo do usuário
         res.json({ success: false, error: error.message });
     }
 });
 
-// Exporta o app para a Vercel
 module.exports = app;
 
 if (require.main === module) {
