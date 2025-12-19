@@ -88,7 +88,7 @@ app.post('/create-preference', async (req, res) => {
             }],
             payer: { email: email },
             back_urls: {
-                success: `${returnUrl}/?status=approved&email=${email}`,
+                success: `${returnUrl}/?status=approved&email=${email}&goal=${encodeURIComponent(description)}`,
                 failure: `${returnUrl}/?status=failure`,
                 pending: `${returnUrl}/?status=pending`
             },
@@ -124,6 +124,9 @@ app.post('/send-email', async (req, res) => {
         return res.status(500).json({ success: false, error: "Chave Resend não configurada" });
     }
 
+    // Link de acesso dinâmico para evitar perda de dados entre navegadores (Instagram/Facebook Ads)
+    const accessLink = `https://receitas-oficial.com.br/?status=approved&email=${encodeURIComponent(email)}&goal=${encodeURIComponent(protocolTitle || 'Perder Peso')}`;
+
     try {
         await resend.emails.send({
             from: 'NutriOfficial <suporte@receitas-oficial.com.br>',
@@ -139,11 +142,11 @@ app.post('/send-email', async (req, res) => {
                     
                     <p style="font-size: 16px; color: #555; line-height: 1.6;">Olá,</p>
                     <p style="font-size: 16px; color: #555; line-height: 1.6;">Seu pagamento foi confirmado e o seu <strong>${protocolTitle || 'Protocolo'}</strong> já está liberado para download.</p>
-                    <p style="font-size: 16px; color: #555; line-height: 1.6;">Este e-mail serve como seu comprovante de acesso vitalício.</p>
+                    <p style="font-size: 16px; color: #555; line-height: 1.6;">Este e-mail serve como seu comprovante de acesso vitalício. Mesmo que mude de telemóvel ou navegador, utilize o botão abaixo para entrar.</p>
                     
                     <div style="background-color: #fffbeb; padding: 25px; border-radius: 10px; text-align: center; margin: 30px 0; border: 1px solid #fcd34d;">
-                        <p style="font-weight: bold; margin-bottom: 20px; color: #333;">Para baixar seu protocolo, clique no botão abaixo e volte ao site:</p>
-                        <a href="https://receitas-oficial.com.br" style="background-color: #000; color: #FFCC00; padding: 15px 30px; text-decoration: none; font-weight: bold; border-radius: 50px; display: inline-block; font-size: 16px;">ACESSAR MATERIAL AGORA</a>
+                        <p style="font-weight: bold; margin-bottom: 20px; color: #333;">Para baixar seu protocolo, clique no botão abaixo:</p>
+                        <a href="${accessLink}" style="background-color: #000; color: #FFCC00; padding: 15px 30px; text-decoration: none; font-weight: bold; border-radius: 50px; display: inline-block; font-size: 16px;">ACESSAR MATERIAL AGORA</a>
                     </div>
                     
                     <p style="color: #999; font-size: 12px; text-align: center; margin-top: 30px;">© 2025 NutriOfficial - Todos os direitos reservados.</p>
