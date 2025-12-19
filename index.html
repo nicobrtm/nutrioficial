@@ -327,11 +327,10 @@
             </div>
         </div>
 
-        <!-- Seção de Garantia (Abaixo do Card) -->
         <section class="max-w-3xl w-full mb-12 grid md:grid-cols-2 gap-6" id="garantia">
             <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex items-center gap-4">
                 <div class="w-16 h-16 bg-black text-tech-yellow rounded-full flex items-center justify-center flex-shrink-0"><i data-lucide="award" class="w-8 h-8"></i></div>
-                <div><h4 class="font-bold text-lg">Garantia Blindada de 7 Dias</h4><p class="text-sm text-gray-600">Se não gostar do conteúdo, devolvemos 100% do seu dinheiro. Sem perguntas.</p></div>
+                <div><h4 class="font-bold text-lg">Garantia Blindada de 7 Dias</h4><p class="text-sm text-gray-600">Se não gostar do conteúdo, devolvemos 100% do seu dinheiro.</p></div>
             </div>
              <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex items-center gap-4">
                 <div class="w-16 h-16 bg-gray-100 text-black rounded-full flex items-center justify-center flex-shrink-0"><i data-lucide="message-circle" class="w-8 h-8"></i></div>
@@ -404,19 +403,25 @@
                 <i data-lucide="x" class="w-6 h-6"></i>
             </button>
             <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="user" class="w-8 h-8 text-tech-black"></i>
+                </div>
                 <h3 class="text-xl font-black">Área do Aluno</h3>
+                <p class="text-sm text-gray-500">Acesse seu material exclusivo</p>
             </div>
-            <form onsubmit="event.preventDefault();" class="space-y-4">
-                <input type="email" placeholder="seu@email.com" class="w-full border p-3 rounded-lg">
-                <input type="password" placeholder="••••••••" class="w-full border p-3 rounded-lg">
-                <button type="submit" class="w-full bg-tech-black text-white font-bold py-3 rounded-lg">ENTRAR</button>
+            <form onsubmit="event.preventDefault(); alert('Login indisponível na demonstração. Conecte ao backend para autenticação real.');" class="space-y-4">
+                <div><label class="block text-xs font-bold text-gray-500 uppercase mb-1">E-mail</label><input type="email" placeholder="seu@email.com" class="w-full border border-gray-200 rounded-lg p-3 text-sm outline-none focus:border-tech-yellow focus:ring-1 focus:ring-tech-yellow"></div>
+                <div><label class="block text-xs font-bold text-gray-500 uppercase mb-1">Senha</label><input type="password" placeholder="••••••••" class="w-full border border-gray-200 rounded-lg p-3 text-sm outline-none focus:border-tech-yellow focus:ring-1 focus:ring-tech-yellow"></div>
+                <button type="submit" class="w-full bg-tech-black text-white font-bold py-3 rounded-lg hover:bg-gray-900 transition">ENTRAR</button>
             </form>
+            <p class="text-xs text-center text-gray-400 mt-6">Ainda não tem acesso? <a href="#" onclick="document.getElementById('login-modal').classList.add('hidden'); window.scrollTo(0,0);" class="text-tech-black font-bold hover:underline">Garanta sua vaga</a></p>
         </div>
     </div>
 
     <!-- BOTÃO WHATSAPP -->
-    <a href="https://wa.me/55997098275" target="_blank" class="fixed bottom-4 right-4 bg-green-500 p-4 rounded-full shadow-lg z-50">
-        <i data-lucide="message-circle" class="w-8 h-8 text-white"></i>
+    <a href="https://wa.me/55997098275?text=Olá, preciso de ajuda com o Protocolo NutriOfficial" target="_blank" class="fixed bottom-4 right-4 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg z-50 transition-transform hover:scale-110 flex items-center justify-center">
+        <!-- WhatsApp Icon SVG -->
+        <svg viewBox="0 0 24 24" class="w-8 h-8 fill-current" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
     </a>
 
     <script>
@@ -449,7 +454,7 @@
             "Melhorar Digestão": { title: "Protocolo Saúde Intestinal", subtitle: "Combate à Disbiose", phase1_title: "Fase 1: Reparo", phase1_desc: "Sem glúten/lactose.", breakfast_title: "Mamão e Chia", breakfast_desc: "Mamão, chia e iogurte.", lunch_title: "Carne Cozida", lunch_desc: "Carne e legumes cozidos.", dinner_title: "Canja Nutritiva", dinner_desc: "Frango e cenoura." }
         };
 
-        // --- DADOS COMPLETOS E DETALHADOS PARA O PDF (RESTAURADO COMPLETO) ---
+        // --- DADOS COMPLETOS E DETALHADOS PARA O PDF ---
         const fullPdfData = {
             "Secar Barriga": { 
                 intro: "Este protocolo foca na redução da gordura visceral através do controle glicêmico e alimentos termogênicos. O segredo está em manter a insulina baixa durante a manhã.",
@@ -851,20 +856,12 @@
                         localStorage.setItem('nutri_pending_payment_id', data.id);
                         localStorage.setItem('nutri_pending_qr_code', data.qr_code);
                         localStorage.setItem('nutri_pending_qr_base64', data.qr_code_base64);
-                        
-                        const checkInterval = setInterval(async () => {
-                            const res = await fetch(`${BACKEND_URL}/payment-status/${data.id}`);
-                            const statusData = await res.json();
-                            if (statusData.status === 'approved') {
-                                clearInterval(checkInterval);
-                                await fetch(`${BACKEND_URL}/send-email`, {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({ email: email, protocolTitle: "Protocolo NutriOfficial" })
-                                });
-                                paymentApproved();
-                            }
-                        }, 5000);
+                        localStorage.setItem('nutri_pending_email', email); // SALVA O EMAIL
+
+                        // A verificação agora acontece na função unificada checkPaymentStatus
+                        checkPaymentStatus(data.id);
+                    } else {
+                        throw new Error("Dados de QR Code inválidos");
                     }
                 } catch (error) {
                     alert("Erro ao gerar Pix.");
@@ -874,12 +871,70 @@
             }
         }
 
-        // ... (Restante das funções mantidas) ...
-        function paymentApproved() {
-            localStorage.setItem('nutri_payment_status', 'approved');
-            showUnlockedContent();
+        function restorePendingPayment() {
+            const savedQrBase64 = localStorage.getItem('nutri_pending_qr_base64');
+            const savedQrCode = localStorage.getItem('nutri_pending_qr_code');
+            const savedId = localStorage.getItem('nutri_pending_payment_id');
+
+            if (savedId && savedQrBase64) {
+                document.getElementById('offer-card').classList.add('hidden');
+                document.getElementById('pix-payment-card').classList.remove('hidden');
+                
+                const img = document.getElementById('pix-qr-img');
+                img.src = `data:image/png;base64,${savedQrBase64}`;
+                img.classList.remove('opacity-50', 'mix-blend-multiply');
+                
+                document.getElementById('pix-copia-cola').value = savedQrCode;
+                document.getElementById('status-text').innerText = "Restaurando conexão...";
+                
+                checkPaymentStatus(savedId);
+            }
         }
+
+        function checkPaymentStatus(id) {
+            paymentCheckInterval = setInterval(async () => {
+                try {
+                    const res = await fetch(`${BACKEND_URL}/payment-status/${id}`);
+                    const data = await res.json();
+                    if (data.status === 'approved') {
+                        clearInterval(paymentCheckInterval);
+                        
+                        // Tenta enviar o e-mail usando o e-mail salvo
+                        const savedEmail = localStorage.getItem('nutri_pending_email');
+                        if (savedEmail) {
+                             await fetch(`${BACKEND_URL}/send-email`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ email: savedEmail, protocolTitle: "Protocolo NutriOfficial" })
+                            });
+                        }
+                        
+                        paymentApproved();
+                    }
+                } catch (e) { console.log('Verificando...'); }
+            }, 5000);
+        }
+
+        function paymentApproved() {
+            const statusText = document.getElementById('status-text');
+            // Se o elemento existe (estamos na tela do Pix), atualiza
+            if (statusText) {
+                statusText.innerHTML = "PAGAMENTO CONFIRMADO!<br><span class='text-[10px] font-normal'>Baixe o PDF para mais detalhes</span>";
+                statusText.parentElement.classList.replace('bg-yellow-50', 'bg-green-100');
+                statusText.classList.replace('text-yellow-800', 'text-green-700');
+            }
+            
+            // Limpa pendências e salva aprovado
+            localStorage.removeItem('nutri_pending_payment_id');
+            localStorage.removeItem('nutri_pending_qr_code');
+            localStorage.removeItem('nutri_pending_qr_base64');
+            localStorage.setItem('nutri_payment_status', 'approved');
+            
+            setTimeout(showUnlockedContent, 1500);
+        }
+
         function showUnlockedContent() {
+            updatePreviewContent();
             document.getElementById('checkout-overlay').style.display = 'none';
             document.getElementById('content-to-unlock').classList.remove('blur-content');
             document.getElementById('download-area').classList.remove('hidden');
@@ -889,7 +944,12 @@
             document.getElementById('progress-bar').classList.remove('bg-tech-yellow');
             document.getElementById('progress-bar').classList.add('bg-green-500');
         }
-        function copyPix() { navigator.clipboard.writeText(document.getElementById('pix-copia-cola').value); alert("Copiado!"); }
+
+        function copyPix() {
+            const code = document.getElementById('pix-copia-cola').value;
+            navigator.clipboard.writeText(code).then(() => alert("Código Pix copiado!"));
+        }
+
         function downloadPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
