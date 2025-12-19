@@ -12,13 +12,13 @@ const client = new MercadoPagoConfig({
     accessToken: process.env.MP_ACCESS_TOKEN 
 });
 
-// Configuração Resend (E-mail)
+// Configuração Resend (E-mail) - Proteção de inicialização
 const resend = new Resend(process.env.RESEND_API_KEY || 're_123_placeholder');
 
 app.use(express.json());
 app.use(cors());
 
-// CORS manual para evitar erros na Vercel
+// CORS manual para evitar erros na Vercel (Pre-flight)
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
@@ -66,11 +66,12 @@ app.post('/create-payment', async (req, res) => {
             qr_code_base64: result.point_of_interaction.transaction_data.qr_code_base64
         });
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: 'Erro ao gerar Pix' });
     }
 });
 
-// --- ROTA: CRIAR CARTÃO ---
+// --- ROTA: CRIAR CARTÃO (PREFERÊNCIA) ---
 app.post('/create-preference', async (req, res) => {
     try {
         const { amount, description, returnUrl, email } = req.body;
@@ -88,6 +89,7 @@ app.post('/create-preference', async (req, res) => {
         const result = await preference.create({ body });
         res.json({ init_point: result.init_point });
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: 'Erro ao criar checkout' });
     }
 });
@@ -104,12 +106,19 @@ app.get('/payment-status/:id', async (req, res) => {
     }
 });
 
+// --- ROTA: LOGIN ÁREA DE MEMBROS ---
+app.post('/login', (req, res) => {
+    const { email } = req.body;
+    // O login retorna sucesso; a validação de acesso é feita pelo e-mail no frontend
+    res.json({ success: true, message: "Login simulado" });
+});
+
 // --- ROTA: ENVIAR EMAIL (RESEND) ---
 app.post('/send-email', async (req, res) => {
     const { email, protocolTitle } = req.body;
     if (!process.env.RESEND_API_KEY) return res.json({ success: false });
 
-    // Link Inteligente com parâmetro fromEmail para evitar loop
+    // Link dinâmico que transporta a permissão (status=approved) e o objetivo (goal)
     const accessLink = `https://receitas-oficial.com.br/?status=approved&email=${encodeURIComponent(email)}&goal=${encodeURIComponent(protocolTitle || 'Perder Peso')}&fromEmail=true`;
 
     try {
@@ -119,15 +128,17 @@ app.post('/send-email', async (req, res) => {
             subject: '✅ Seu Acesso Oficial Liberado! (Protocolo NutriOfficial)',
             html: `
                 <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px; background-color: #fff;">
-                    <h2 style="color: #000; text-align: center;">NUTRI<span style="color: #FFCC00;">OFFICIAL</span></h2>
-                    <h1 style="color: #10B981; text-align: center;">Pagamento Confirmado! 🚀</h1>
-                    <p>Olá, o seu acesso ao <strong>${protocolTitle || 'Protocolo'}</strong> foi liberado.</p>
-                    <div style="background: #fffbeb; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid #fcd34d; margin: 20px 0;">
-                        <p style="font-weight: bold; margin-bottom: 15px;">Acesse e faça o download aqui:</p>
-                        <a href="${accessLink}" style="background: #000; color: #FFCC00; padding: 12px 25px; text-decoration: none; font-weight: bold; border-radius: 5px; display: inline-block;">BAIXAR MEU PDF AGORA</a>
+                    <div style="text-align: center; border-bottom: 1px solid #eee; padding-bottom: 20px;">
+                        <h2 style="color: #000; margin: 0;">NUTRI<span style="color: #FFCC00;">OFFICIAL</span></h2>
                     </div>
-                    <p style="color: #666; font-size: 12px;">Se você trocou de navegador ou de celular, use sempre o link deste e-mail para acessar seu material.</p>
-                    <p style="color: #999; font-size: 10px; text-align: center;">© 2025 NutriOfficial</p>
+                    <h1 style="color: #10B981; text-align: center; margin-top: 30px;">Pagamento Confirmado! 🚀</h1>
+                    <p>Olá, o seu acesso ao <strong>${protocolTitle || 'Protocolo'}</strong> foi liberado com sucesso.</p>
+                    <div style="background: #fffbeb; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid #fcd34d; margin: 20px 0;">
+                        <p style="font-weight: bold; margin-bottom: 15px; color: #333;">Clique no botão abaixo para baixar seu material:</p>
+                        <a href="${accessLink}" style="background: #000; color: #FFCC00; padding: 15px 30px; text-decoration: none; font-weight: bold; border-radius: 50px; display: inline-block; font-size: 16px;">ACESSAR MATERIAL AGORA</a>
+                    </div>
+                    <p style="color: #666; font-size: 11px; text-align: center;">Dica: Salve este e-mail. Se trocar de navegador, use este botão para reativar seu acesso.</p>
+                    <p style="color: #999; font-size: 10px; text-align: center; margin-top: 20px;">© 2025 NutriOfficial</p>
                 </div>
             `
         });
@@ -135,12 +146,6 @@ app.post('/send-email', async (req, res) => {
     } catch (error) {
         res.json({ success: false });
     }
-});
-
-// --- ROTA: LOGIN ÁREA DE MEMBROS ---
-app.post('/login', (req, res) => {
-    const { email } = req.body;
-    res.json({ success: true, message: "Login realizado" });
 });
 
 module.exports = app;

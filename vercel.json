@@ -24,6 +24,10 @@
       "destination": "/server.js"
     },
     {
+      "source": "/login",
+      "destination": "/server.js"
+    },
+    {
       "source": "/send-email",
       "destination": "/server.js"
     },
