@@ -34,8 +34,11 @@ app.post('/create-payment', async (req, res) => {
         
         // Garante que o valor é um número válido
         const transactionAmount = parseFloat(amount);
-        if (isNaN(transactionAmount)) {
-            throw new Error("Valor do pagamento inválido");
+        if (!transactionAmount || isNaN(transactionAmount)) {
+            return res.status(400).json({ error: "Valor do pagamento inválido" });
+        }
+        if (!email) {
+            return res.status(400).json({ error: "E-mail é obrigatório" });
         }
 
         const payment = new Payment(client);
@@ -46,8 +49,13 @@ app.post('/create-payment', async (req, res) => {
             payment_method_id: 'pix',
             payer: { 
                 email: email,
-                first_name: 'Cliente', // Adicionado para evitar erro de validação
-                last_name: 'Nutri'
+                first_name: 'Cliente',
+                last_name: 'Nutri',
+                // Adicionando identificação genérica para evitar recusa do Pix
+                identification: {
+                    type: 'CPF',
+                    number: '19119119100' 
+                }
             },
             date_of_expiration: new Date(Date.now() + 30 * 60 * 1000).toISOString()
         };
@@ -62,12 +70,10 @@ app.post('/create-payment', async (req, res) => {
             ticket_url: result.point_of_interaction.transaction_data.ticket_url
         });
     } catch (error) {
-        console.error("Erro Detalhado Pix:", JSON.stringify(error, null, 2));
-        // Retorna o erro real para facilitar a correção
+        console.error("Erro Detalhado Pix:", error);
         res.status(500).json({ 
             error: 'Erro ao gerar Pix', 
-            details: error.message,
-            api_response: error.cause || error
+            details: error.message
         });
     }
 });
@@ -76,18 +82,26 @@ app.post('/create-payment', async (req, res) => {
 app.post('/create-preference', async (req, res) => {
     try {
         const { amount, description, returnUrl, email } = req.body;
+
+        const transactionAmount = parseFloat(amount);
+        if (!transactionAmount || isNaN(transactionAmount)) {
+            return res.status(400).json({ error: "Valor do pagamento inválido" });
+        }
+
         const preference = new Preference(client);
 
         const body = {
             items: [
                 {
                     id: 'protocolo-30-dias',
-                    title: description,
+                    title: description || 'Protocolo NutriOfficial',
                     quantity: 1,
-                    unit_price: Number(amount)
+                    unit_price: transactionAmount
                 }
             ],
-            payer: { email: email },
+            payer: { 
+                email: email || 'cliente@email.com' 
+            },
             back_urls: {
                 success: `${returnUrl}/?status=approved&email=${email}`,
                 failure: `${returnUrl}/?status=failure`,
@@ -126,6 +140,8 @@ app.get('/payment-status/:id', async (req, res) => {
 // --- ROTA 4: ENVIAR E-MAIL VIA RESEND ---
 app.post('/send-email', async (req, res) => {
     const { email, protocolTitle } = req.body;
+
+    if (!email) return res.status(400).json({ error: "Email obrigatório" });
 
     try {
         const data = await resend.emails.send({
